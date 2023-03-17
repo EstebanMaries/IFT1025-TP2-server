@@ -2,6 +2,7 @@
 !target/classes/server.jar
 target/classes/META-INF
 target/classes/server
+target/classes/client
 target/classes/MANIFEST.MF
 target/test-classes
 target/generated-sources

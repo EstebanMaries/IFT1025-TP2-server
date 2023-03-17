@@ -26,8 +26,8 @@
                 <tr>
                     <td><code>Server(int port)</code></td>
                     <td>
-                        Crée un nouveau serveur qui écoute sur le port spécifié.
-                        @param port Le port sur lequel le serveur doit écouter.
+                        Crée un nouveau serveur qui écoute sur le port spécifié.<br>
+                        @param port Le port sur lequel le serveur doit écouter.<br>
                         @throws IOException Si une erreur se produit lors de la création du socket du serveur.
                     </td>
                 </tr>
@@ -48,13 +48,13 @@
                 <tr>
                     <td><code>public void</code></td>
                     <td><code><strong>addEventHandler</strong></code></td>
-                    <td>Ajoute un événement h au géreur d’événements.
+                    <td>Ajoute un événement h au géreur d’événements.<br>
                         @param h de type EventHandler, l’événement à ajouter.</td>
                 </tr>
                 <tr>
                     <td><code>private void</code></td>
                     <td><code><strong>alertHandlers</strong></code></td>
-                    <td>Mets en action les événements ajoutés.
+                    <td>Mets en action les événements ajoutés.<br>
                         @param cmd et arg, avec cmd la commande à renvoyer et arg l’argument a lui donné.</td>
                 </tr>
                 <tr>
@@ -63,23 +63,29 @@
                     <td>Commence l’interaction client serveur</td>
                 </tr>
                 <tr>
+                    <td><code>public void</code></td>
+                    <td><code><strong>listen</strong></code></td>
+                    <td>Récupère les entrées du client.<br>
+                        @throws IOException, ClassNotFoundException si une erreur se produit lors de la lecture des entrées.</td>
+                </tr>
+                <tr>
                     <td><code>public Pair String, String</code></td>
                     <td><code><strong>processCommandLine</strong></code></td>
-                    <td>Mets en page la commande obtenue.
-                        @param line
-                        @return Pair</td>
+                    <td>Mets en page la commande obtenue.<br>
+                        @param line une commande<br>
+                        @return Pair la separation entre le nom de la commande et son argument</td>
                 </tr>
                 <tr>
                     <td><code>public void</code></td>
                     <td><code><strong>disconnect</strong></code></td>
-                    <td>Déconnecte le client du serveur.
+                    <td>Déconnecte le client du serveur.<br>
                         @throws IOException si une erreur se produit lors de la déconnection.</td>
                 </tr>
                 <tr>
                     <td><code>public void</code></td>
                     <td><code><strong>handleEvents</strong></code></td>
-                    <td>Gère la commande donnée.
-                        @param cmd la commande à traiter
+                    <td>Gère la commande donnée.<br>
+                        @param cmd la commande à traiter<br>
                         @param arg l'argument a utilisé avec la commande.</td>
                 </tr>
                 <tr>
@@ -87,16 +93,15 @@
                     <td><code><strong>handleLoadCourses</strong></code></td>
                     <td>Lire un fichier texte contenant des informations sur les cours et les transformer en liste d'objets 'Course'.
                         La méthode filtre les cours par la session spécifiée en argument.
-                        Ensuite, elle renvoie la liste des cours pour une session au client en utilisant l'objet 'objectOutputStream'.
-                        @param arg la session pour laquelle on veut récupérer la liste des cours
+                        Ensuite, elle renvoie la liste des cours pour une session au client en utilisant l'objet 'objectOutputStream'.<br>
+                        @param arg la session pour laquelle on veut récupérer la liste des cours<br>
                         @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux</td>
                 </tr>
                 <tr>
                     <td><code>public void</code></td>
                     <td><code><strong>handleRegistration</strong></code></td>
                     <td>Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', 
-                        l'enregistrer dans un fichier texte
-                        et renvoyer un message de confirmation au client.
+                        l'enregistrer dans un fichier texte et renvoyer un message de confirmation au client.<br>
                         @throws Exception si une erreur se produit lors de la lecture de l'objet, 
                         l'écriture dans un fichier ou dans le flux de sortie.</td>
                 </tr>

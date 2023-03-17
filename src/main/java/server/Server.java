@@ -31,7 +31,7 @@ public class Server {
         * @throws IOException Si une erreur se produit lors de la création du socket du serveur.
     */
     public Server(int port) throws IOException {
-        this.server = new ServerSocket(port, 1);
+        this.server = new ServerSocket(port,1);
         this.handlers = new ArrayList<EventHandler>();
         this.addEventHandler(this::handleEvents);
     }
@@ -136,7 +136,7 @@ public class Server {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] content = line.split("\t");
-                if (content[2]==arg) {
+                if (content[2].equals(arg)) {
                     relevantClasses.add(new Course(content[0], content[1], content[2]));
                 }
             }
@@ -150,7 +150,7 @@ public class Server {
     /**
      Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', l'enregistrer dans un fichier texte
      et renvoyer un message de confirmation au client.
-     @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
+     @throws Exception ClassNotFoundException si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
         BufferedWriter writer;
@@ -168,9 +168,7 @@ public class Server {
                 writer.append(session+"\t"+code+"\t"+matricule+"\t"+prenom+"\t"+nom+"\t"+email+"\t\n");
                 writer.close();
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

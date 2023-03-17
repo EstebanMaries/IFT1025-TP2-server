@@ -36,16 +36,16 @@ public class Server {
         this.addEventHandler(this::handleEvents);
     }
     /**
-     * Ajoute un evenement h au gereur d'evenements.
-     * @param h, de type EventHandler, l'evenement a ajouter.
+     * Ajoute un événement h au géreur d’événements.
+     * @param h de type EventHandler, l’événement à ajouter.
      */
     public void addEventHandler(EventHandler h) {
         this.handlers.add(h);
     }
 
     /**
-     * Mets en action les evenements ajoute.
-     * @param cmd et arg, avec cmd la commande a renvoyer et arg l'argument a lui donne.
+     * Mets en action les événements ajoutés.
+     * @param cmd et arg, avec cmd la commande à renvoyer et arg l’argument a lui donné.
      */
     private void alertHandlers(String cmd, String arg) {
         for (EventHandler h : this.handlers) {
@@ -54,7 +54,7 @@ public class Server {
     }
 
     /**
-     * commence l'interaction client serveur
+     * Commence l’interaction client serveur
      */
     public void run() {
         while (true) {
@@ -73,7 +73,7 @@ public class Server {
     }
 
     /**
-     * recupere les input du client.
+     * Récupère les inputs du client.
      * @throws IOException, ClassNotFoundException si une erreur se produit lors de la lecture des inputs. 
      */
     public void listen() throws IOException, ClassNotFoundException {
@@ -99,8 +99,8 @@ public class Server {
     }
 
     /**
-     * Deconnecte le client du serveur.
-     * @throws IOException si une ereur se produit lors de la deconnection.
+     * Déconnecte le client du serveur.
+     * @throws IOException si une erreur se produit lors de la déconnection.
      */
     public void disconnect() throws IOException {
         objectOutputStream.close();
@@ -109,9 +109,9 @@ public class Server {
     }
 
     /**
-     * Gere la commande donnee
-     * @param cmd la commande a traiter
-     * @param arg l'argument a utilise avec la commande
+     * Gère la commande donnée.
+     * @param cmd la commande à traiter
+     * @param arg l'argument a utilisé avec la commande.
      */
     public void handleEvents(String cmd, String arg) {
         if (cmd.equals(REGISTER_COMMAND)) {

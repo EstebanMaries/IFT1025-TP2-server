@@ -1,7 +1,12 @@
 package server;
 
 import javafx.util.Pair;
+import server.models.Course;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -91,7 +96,22 @@ public class Server {
      @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux
      */
     public void handleLoadCourses(String arg) {
-        // TODO: implémenter cette méthode
+        ArrayList<Course> relevantClasses = new ArrayList<>();
+        try {
+            FileReader classes = new FileReader("../data/cours.txt");
+            BufferedReader reader = new BufferedReader(classes);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] content = line.split("\t");
+                if (content[2]==arg) {
+                    relevantClasses.add(new Course(content[0], content[1], content[2]));
+                }
+            }
+            this.objectOutputStream.writeObject(relevantClasses);
+            reader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -100,7 +120,17 @@ public class Server {
      @throws Exception si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
     public void handleRegistration() {
-        // TODO: implémenter cette méthode
+        BufferedWriter writer;
+        try {
+            String RegistrationForm = objectInputStream.readObject().toString();
+            writer = new BufferedWriter(new FileWriter("../data/inscription.txt", true));
+            writer.append(RegistrationForm).append("\n");
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

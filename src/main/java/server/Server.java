@@ -73,8 +73,8 @@ public class Server {
     }
 
     /**
-     * Récupère les inputs du client.
-     * @throws IOException, ClassNotFoundException si une erreur se produit lors de la lecture des inputs. 
+     * Récupère les entrées du client.
+     * @throws IOException, ClassNotFoundException si une erreur se produit lors de la lecture des entrées.
      */
     public void listen() throws IOException, ClassNotFoundException {
         String line;
@@ -88,8 +88,8 @@ public class Server {
 
     /**
      * Mets en page la commande obtenue.
-     * @param line
-     * @return Pair
+     * @param line une commande
+     * @return Pair la separation entre le nom de la commande et son argument
      */
     public Pair<String, String> processCommandLine(String line) {
         String[] parts = line.split(" ");
@@ -142,7 +142,7 @@ public class Server {
             }
             this.objectOutputStream.writeObject(relevantClasses);
             reader.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -173,4 +173,3 @@ public class Server {
         }
     }
 }
-

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Server</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+</head>
+<body>
+    <div class="header">
+        <h1>Server</h1>
+        <p>public class Server</p>
+    </div>
+    <div class="description">
+        <p>Represente la relation client avec le serveur.</p>
+    </div>
+    <div class="summary">
+        <h2>Sommaire constructeur</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>constructeur</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Server(int port)</code></td>
+                    <td>
+                        Crée un nouveau serveur qui écoute sur le port spécifié.
+                        @param port Le port sur lequel le serveur doit écouter.
+                        @throws IOException Si une erreur se produit lors de la création du socket du serveur.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="methods">
+        <h2>Somme methodes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type et modifieur</th>
+                    <th>Methode</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>public void</code></td>
+                    <td><code><strong>addEventHandler</strong></code></td>
+                    <td>Ajoute un evenement h au gereur d'evenements.
+                        @param h, de type EventHandler, l'evenement a ajouter.</td>
+                </tr>
+                <tr>
+                    <td><code>private void</code></td>
+                    <td><code><strong>alertHandlers</strong></code></td>
+                    <td>Mets en action les evenements ajoute.
+                        @param cmd et arg, avec cmd la commande a renvoyer et arg l'argument a lui donne.</td>
+                </tr>
+                <tr>
+                    <td><code>private void</code></td>
+                    <td><code><strong>alertHandlers</strong></code></td>
+                    <td>Mets en action les evenements ajoute.
+                        @param cmd et arg, avec cmd la commande a renvoyer et arg l'argument a lui donne.</td>
+                </tr>
+                <tr>
+                    <td><code>public void</code></td>
+                    <td><code><strong>run</strong></code></td>
+                    <td>Commence l'interaction client serveur.</td>
+                </tr>
+                <tr>
+                    <td><code>private void</code></td>
+                    <td><code><strong>alertHandlers</strong></code></td>
+                    <td>Mets en action les evenements ajoute.
+                        @param cmd et arg, avec cmd la commande a renvoyer et arg l'argument a lui donne.</td>
+                </tr>
+                <tr>
+                    <td><code>public Pair String, String</code></td>
+                    <td><code><strong>processCommandLine</strong></code></td>
+                    <td>Mets en page la commande obtenue.
+                        @param line
+                        @return Pair</td>
+                </tr>
+                <tr>
+                    <td><code>public void</code></td>
+                    <td><code><strong>disconnect</strong></code></td>
+                    <td>Deconnecte le client du serveur.
+                        @throws IOException si une ereur se produit lors de la deconnection.</td>
+                </tr>
+                <tr>
+                    <td><code>public void</code></td>
+                    <td><code><strong>handleEvents</strong></code></td>
+                    <td>Gere la commande donnee
+                        @param cmd la commande a traiter
+                        @param arg l'argument a utilise avec la commande</td>
+                </tr>
+                <tr>
+                    <td><code>public void</code></td>
+                    <td><code><strong>handleLoadCourses</strong></code></td>
+                    <td>Lire un fichier texte contenant des informations sur les cours et les transformer en liste d'objets 'Course'.
+                        La méthode filtre les cours par la session spécifiée en argument.
+                        Ensuite, elle renvoie la liste des cours pour une session au client en utilisant l'objet 'objectOutputStream'.
+                        @param arg la session pour laquelle on veut récupérer la liste des cours
+                        @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux</td>
+                </tr>
+                <tr>
+                    <td><code>public void</code></td>
+                    <td><code><strong>handleRegistration</strong></code></td>
+                    <td>Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', 
+                        l'enregistrer dans un fichier texte
+                        et renvoyer un message de confirmation au client.
+                        @throws Exception si une erreur se produit lors de la lecture de l'objet, 
+                        l'écriture dans un fichier ou dans le flux de sortie.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="footer">
+        <hr>
+        <p>Esteban Maries 20235999, Herve Ngisse 20204609</p>
+    </div>
+</body>
+</html>

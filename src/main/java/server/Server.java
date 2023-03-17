@@ -2,6 +2,7 @@ package server;
 
 import javafx.util.Pair;
 import server.models.Course;
+import server.models.RegistrationForm;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,23 +25,37 @@ public class Server {
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
     private final ArrayList<EventHandler> handlers;
-
+    /**
+        * Crée un nouveau serveur qui écoute sur le port spécifié.
+        * @param port Le port sur lequel le serveur doit écouter.
+        * @throws IOException Si une erreur se produit lors de la création du socket du serveur.
+    */
     public Server(int port) throws IOException {
         this.server = new ServerSocket(port, 1);
         this.handlers = new ArrayList<EventHandler>();
         this.addEventHandler(this::handleEvents);
     }
-
+    /**
+     * Ajoute un evenement h au gereur d'evenements.
+     * @param h, de type EventHandler, l'evenement a ajouter.
+     */
     public void addEventHandler(EventHandler h) {
         this.handlers.add(h);
     }
 
+    /**
+     * Mets en action les evenements ajoute.
+     * @param cmd et arg, avec cmd la commande a renvoyer et arg l'argument a lui donne.
+     */
     private void alertHandlers(String cmd, String arg) {
         for (EventHandler h : this.handlers) {
             h.handle(cmd, arg);
         }
     }
 
+    /**
+     * commence l'interaction client serveur
+     */
     public void run() {
         while (true) {
             try {
@@ -57,6 +72,10 @@ public class Server {
         }
     }
 
+    /**
+     * recupere les input du client.
+     * @throws IOException, ClassNotFoundException si une erreur se produit lors de la lecture des inputs. 
+     */
     public void listen() throws IOException, ClassNotFoundException {
         String line;
         if ((line = this.objectInputStream.readObject().toString()) != null) {
@@ -67,6 +86,11 @@ public class Server {
         }
     }
 
+    /**
+     * Mets en page la commande obtenue.
+     * @param line
+     * @return Pair
+     */
     public Pair<String, String> processCommandLine(String line) {
         String[] parts = line.split(" ");
         String cmd = parts[0];
@@ -74,12 +98,21 @@ public class Server {
         return new Pair<>(cmd, args);
     }
 
+    /**
+     * Deconnecte le client du serveur.
+     * @throws IOException si une ereur se produit lors de la deconnection.
+     */
     public void disconnect() throws IOException {
         objectOutputStream.close();
         objectInputStream.close();
         client.close();
     }
 
+    /**
+     * Gere la commande donnee
+     * @param cmd la commande a traiter
+     * @param arg l'argument a utilise avec la commande
+     */
     public void handleEvents(String cmd, String arg) {
         if (cmd.equals(REGISTER_COMMAND)) {
             handleRegistration();
@@ -122,10 +155,19 @@ public class Server {
     public void handleRegistration() {
         BufferedWriter writer;
         try {
-            String RegistrationForm = objectInputStream.readObject().toString();
-            writer = new BufferedWriter(new FileWriter("../data/inscription.txt", true));
-            writer.append(RegistrationForm).append("\n");
-            writer.close();
+            Object form = objectInputStream.readObject();
+            if (form instanceof RegistrationForm){
+                RegistrationForm rForm = (RegistrationForm) form;
+                writer = new BufferedWriter(new FileWriter("../data/inscription.txt", true));
+                String session = rForm.getCourse().getSession();
+                String code = rForm.getCourse().getCode();
+                String matricule = rForm.getMatricule();
+                String prenom = rForm.getPrenom();
+                String nom = rForm.getNom();
+                String email = rForm.getEmail();
+                writer.append(session+"\t"+code+"\t"+matricule+"\t"+prenom+"\t"+nom+"\t"+email+"\t\n");
+                writer.close();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

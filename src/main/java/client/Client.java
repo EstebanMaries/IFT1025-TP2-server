@@ -16,8 +16,8 @@ public class Client {
     public final String CHOICE = "> Choix: ";
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
-    private boolean hasConnected=false;
     private final Socket clientSocket;
+
 
     public Client(int port) throws IOException {
         this.clientSocket = new Socket("127.0.0.1", port);
@@ -26,10 +26,7 @@ public class Client {
         try {
             this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             this.objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
-            if (!hasConnected) {
-                System.out.println("*** Bienvenue au portail d'inscription de cours de l'UDEM ***");
-                this.hasConnected=true;
-            }
+
             mainPrompt();
         } catch (IOException e){
             e.printStackTrace();
@@ -40,13 +37,12 @@ public class Client {
         Scanner input = new Scanner(System.in);
         System.out.println(MAINPROMPT);
         System.out.print(CHOICE);
-        if (input.hasNext()){
-            System.out.println(input.next());
-            if (input.nextInt()==1){
-                getCourses(sessionSelection());
-            } else if (input.nextInt()==2){
-                inscription();
-            }
+        int choice = input.nextInt();
+        if (choice==1){
+            String session =sessionSelection();
+            getCourses(session);
+        } else if (choice==2){
+            inscription();
         }
     }
 
@@ -71,7 +67,7 @@ public class Client {
 
             objectOutputStream.writeObject("INSCRIRE");
             objectOutputStream.writeObject(form);
-            System.out.println("Félicitations! Inscription réussie de "+prenom+" au cours "+cours);
+            System.out.println("Félicitations! Inscription réussie de "+prenom+" au cours "+cours+"\n");
 
         } catch (IOException e){
             e.printStackTrace();
@@ -79,12 +75,10 @@ public class Client {
     }
 
     private void getCourses(String session)  {
-        System.out.println(session);
         ArrayList<Course> courses;
         try{
             objectOutputStream.writeObject("CHARGER "+session);
             Object obj = objectInputStream.readObject();
-            System.out.println(obj);
             if (obj instanceof ArrayList) {
                 courses = (ArrayList<Course>) obj;
                 System.out.println("Les cours offerts pendant la session d'"+session+" sont:");
@@ -102,16 +96,15 @@ public class Client {
         Scanner input = new Scanner(System.in);
         System.out.println(SESSIONPROMPT);
         System.out.print(CHOICE);
-        if (input.hasNext()){
-            System.out.println(input.nextInt());
-            if (input.nextInt()==1){
-                return "Automne";
-            } else if (input.nextInt()==2){
-                return "Hiver";
-            } else if (input.nextInt()==3){
-                return "Ete";
-            }
-        } return "";
+        int choice = input.nextInt();
+        if (choice==1){
+            return "Automne";
+        } else if (choice==2){
+            return "Hiver";
+        } else if (choice==3){
+            return "Ete";
+        }
+         return "";
     }
 
 

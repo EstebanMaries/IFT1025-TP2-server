@@ -14,3 +14,11 @@ target/generated-test-sources
 .idea/
 *.iml
 *.iws
+data/inscription.txt
+target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
+target/maven-archiver/pom.properties
+target/surefire-reports/server.AppTest.txt
+target/surefire-reports/TEST-server.AppTest.xml

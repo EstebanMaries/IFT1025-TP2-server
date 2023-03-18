@@ -1,1 +1,4 @@
 Automne	IFT2255	12345678	Michalis	Famelis	mfamelis@iro.umontreal.ca
+Hiver	IFT1025	20235999	Esteban	Maries	esteban.maries@umontreal.ca	
+2	2	2	2	2	2	
+6	5	4	2	1	3	

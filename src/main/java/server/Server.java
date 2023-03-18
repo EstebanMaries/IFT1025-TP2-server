@@ -25,6 +25,7 @@ public class Server {
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
     private final ArrayList<EventHandler> handlers;
+
     /**
         * Crée un nouveau serveur qui écoute sur le port spécifié.
         * @param port Le port sur lequel le serveur doit écouter.
@@ -35,6 +36,7 @@ public class Server {
         this.handlers = new ArrayList<EventHandler>();
         this.addEventHandler(this::handleEvents);
     }
+
     /**
      * Ajoute un événement h au géreur d’événements.
      * @param h de type EventHandler, l’événement à ajouter.
@@ -45,7 +47,8 @@ public class Server {
 
     /**
      * Mets en action les événements ajoutés.
-     * @param cmd et arg, avec cmd la commande à renvoyer et arg l’argument a lui donné.
+     * @param cmd la commande à renvoyer
+     * @param arg l’argument a donné à la commande.
      */
     private void alertHandlers(String cmd, String arg) {
         for (EventHandler h : this.handlers) {
@@ -131,13 +134,14 @@ public class Server {
     public void handleLoadCourses(String arg) {
         ArrayList<Course> relevantClasses = new ArrayList<>();
         try {
-            FileReader classes = new FileReader("../data/cours.txt");
+            FileReader classes = new FileReader("data/cours.txt");
             BufferedReader reader = new BufferedReader(classes);
             String line;
+            System.out.println("Gathering courses...");
             while ((line = reader.readLine()) != null) {
                 String[] content = line.split("\t");
                 if (content[2].equals(arg)) {
-                    relevantClasses.add(new Course(content[0], content[1], content[2]));
+                    relevantClasses.add(new Course(content[1], content[0], content[2]));
                 }
             }
             this.objectOutputStream.writeObject(relevantClasses);
@@ -158,7 +162,7 @@ public class Server {
             Object form = objectInputStream.readObject();
             if (form instanceof RegistrationForm){
                 RegistrationForm rForm = (RegistrationForm) form;
-                writer = new BufferedWriter(new FileWriter("../data/inscription.txt", true));
+                writer = new BufferedWriter(new FileWriter("data/inscription.txt", true));
                 String session = rForm.getCourse().getSession();
                 String code = rForm.getCourse().getCode();
                 String matricule = rForm.getMatricule();

@@ -128,7 +128,7 @@ public class Server {
     public void handleLoadCourses(String arg) {
         ArrayList<Course> relevantClasses = new ArrayList<>();
         try {
-            FileReader classes = new FileReader("data/cours.txt");
+            FileReader classes = new FileReader("src/main/java/server/data/cours.txt");
             BufferedReader reader = new BufferedReader(classes);
             String line;
             System.out.println("Gathering courses...");
@@ -138,34 +138,68 @@ public class Server {
                     relevantClasses.add(new Course(content[1], content[0], content[2]));
                 }
             }
-            this.objectOutputStream.writeObject(relevantClasses);
+            objectOutputStream.writeObject(relevantClasses);
             reader.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    /**
-     Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', l'enregistrer dans un fichier texte
-     et renvoyer un message de confirmation au client.
-     @throws Exception ClassNotFoundException si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
-     */
+        /**
+         Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', l'enregistrer dans un fichier texte
+         et renvoyer un message de confirmation au client.
+         @throws Exception ClassNotFoundException si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
+         */
     public void handleRegistration() {
+        String session,code,matricule,prenom,nom,email;
+        Course course;
         BufferedWriter writer;
+        RegistrationForm rForm;
         try {
             Object form = objectInputStream.readObject();
             if (form instanceof RegistrationForm){
-                RegistrationForm rForm = (RegistrationForm) form;
-                writer = new BufferedWriter(new FileWriter("data/inscription.txt", true));
-                String session = rForm.getCourse().getSession();
-                String code = rForm.getCourse().getCode();
-                String matricule = rForm.getMatricule();
-                String prenom = rForm.getPrenom();
-                String nom = rForm.getNom();
-                String email = rForm.getEmail();
-                writer.append(session+"\t"+code+"\t"+matricule+"\t"+prenom+"\t"+nom+"\t"+email+"\t\n");
-                writer.close();
+                rForm = (RegistrationForm) form;
+                writer = new BufferedWriter(new FileWriter("src/main/java/server/data/inscription.txt", true));
+                session = rForm.getCourse().getSession();
+                code = rForm.getCourse().getCode();
+                matricule = rForm.getMatricule();
+                prenom = rForm.getPrenom();
+                nom = rForm.getNom();
+                email = rForm.getEmail();
+                course = rForm.getCourse();
+                if( Integer.parseInt(matricule)<=999999 && Integer.parseInt(matricule)>=100000 && checkCourse(course)) {
+                    writer.append(session).append("\t").append(code).append("\t").append(matricule).append("\t").append(prenom).append("\t").append(nom).append("\t").append(email).append("\t\n");
+                    writer.close();
+                } else {
+                    objectOutputStream.writeObject("Les arguments entrés sont invalides.");
+                }
+
+
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Vérifie que les infos du cours donnés par le client existent.
+     * @param course le cours entré par le client
+     * @return la présence ou non du cours dans cours.txt
+     */
+    private boolean checkCourse(Course course) {
+        ArrayList<Course> Courses = new ArrayList<>();
+        String[] content;
+        String line;
+        try {
+            FileReader classes = new FileReader("src/main/java/server/data/cours.txt");
+            BufferedReader reader = new BufferedReader(classes);
+            System.out.println("Gathering courses...");
+            while ((line = reader.readLine()) != null) {
+                content = line.split("\t");
+                Courses.add(new Course(content[1], content[0], content[2]));
+            }
+            reader.close();
+            return Courses.contains(course);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

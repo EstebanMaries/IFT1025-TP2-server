@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+//TODO : verify matricule and code of the classe entered by the user
 public class Client {
     public final String MAINPROMPT = "1. Consulter les cours offerts pour une session\n2. S'inscrire à un cours";
     public final String SESSIONPROMPT = "Veuillez choisir la session pour laquelle vous voulez  consulter  la liste de cours:\n1. Automne\n2. Hiver\n3. Ete";
@@ -47,24 +47,24 @@ public class Client {
     }
 
     private void inscription(){
+        String prenom,nom,email,matricule,code,session,cours;
         Scanner input = new Scanner(System.in);
         System.out.print("Veuillez saisir votre prénom: ");
-        String prenom = input.next();
+        prenom = input.next();
         System.out.print("Veuillez saisir votre nom: ");
-        String nom = input.next();
+        nom = input.next();
         System.out.print("Veuillez saisir votre email: ");
-        String email = input.next();
+        email = input.next();
         System.out.print("Veuillez saisir votre matricule: ");
-        String matricule = input.next();
+        matricule = input.next();
         System.out.print("Veuillez saisir le code du cours: ");
-        String code = input.next();
+        code = input.next();
         System.out.print("Veuillez saisir la session du cours: ");
-        String session = input.next();
+        session = input.next();
         System.out.print("Veuillez saisir le nom du cours: ");
-        String cours = input.next();
+        cours = input.next();
         RegistrationForm form = new RegistrationForm(prenom, nom, email, matricule, new Course(cours,code, session));
         try{
-
             objectOutputStream.writeObject("INSCRIRE");
             objectOutputStream.writeObject(form);
             System.out.println("Félicitations! Inscription réussie de "+prenom+" au cours "+cours+"\n");

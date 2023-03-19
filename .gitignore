@@ -14,7 +14,7 @@ target/generated-test-sources
 .idea/
 *.iml
 *.iws
-data/inscription.txt
+src/main/java/server/data/inscription.txt
 target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
 target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
 target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
@@ -22,3 +22,15 @@ target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputF
 target/maven-archiver/pom.properties
 target/surefire-reports/server.AppTest.txt
 target/surefire-reports/TEST-server.AppTest.xml
+data/inscription.txt
+data/inscription.txt
+JavaFX/19.0.2.1/javafx-base-19.0.2.1-sources.jar
+JavaFX/19.0.2.1/javafx-base-19.0.2.1-sources.jar.sha1
+JavaFX/19.0.2.1/javafx-base-19.0.2.1-win.jar
+JavaFX/19.0.2.1/javafx-base-19.0.2.1-win.jar.sha1
+JavaFX/19.0.2.1/javafx-base-19.0.2.1.jar.sha1
+JavaFX/19.0.2.1/javafx-base-19.0.2.1.pom
+JavaFX/19.0.2.1/javafx-base-19.0.2.1.pom.sha1
+src/main/java/server/data/cours.txt
+src/main/MANIFEST.MF
+target/META-INF/MANIFEST.MF

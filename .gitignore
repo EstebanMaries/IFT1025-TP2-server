@@ -34,3 +34,6 @@ JavaFX/19.0.2.1/javafx-base-19.0.2.1.pom.sha1
 src/main/java/server/data/cours.txt
 src/main/MANIFEST.MF
 target/META-INF/MANIFEST.MF
+data/inscription.txt
+target/original-server.jar
+target/Server-1.0-SNAPSHOT-shaded.jar

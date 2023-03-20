@@ -12,12 +12,39 @@ import java.util.Arrays;
 
 public class Server {
 
+    /**
+     * Commande permettant d'inscrire le client à un cours
+     */
     public final static String REGISTER_COMMAND = "INSCRIRE";
+
+    /**
+     * Commande permettant de montrer les cours d'une session à un client
+     */
     public final static String LOAD_COMMAND = "CHARGER";
+
+    /**
+     * La prise du serveur
+     */
     private final ServerSocket server;
+
+    /**
+     * La prise du client
+     */
     private Socket client;
+
+    /**
+     * L'entrée des arguments du client vers le serveur
+     */
     private ObjectInputStream objectInputStream;
+
+    /**
+     * La sortie des arguments du serveur vers le client
+     */
     private ObjectOutputStream objectOutputStream;
+
+    /**
+     * ArrayList contenant les évènements à gérer
+     */
     private final ArrayList<EventHandler> handlers;
 
     /**
@@ -51,7 +78,7 @@ public class Server {
     }
 
     /**
-     * Commence l’interaction client serveur
+     * Rend le serveur capable de recevoir les requêtes d'un client
      */
     public void run() {
         while (true) {
@@ -171,7 +198,7 @@ public class Server {
                     writer.append(session).append("\t").append(code).append("\t").append(matricule).append("\t").append(prenom).append("\t").append(nom).append("\t").append(email).append("\t\n");
                     writer.close();
                 } else {
-                    objectOutputStream.writeObject("Les arguments entrés sont invalides.");
+                    objectOutputStream.writeBoolean(false);
                 }
 
 

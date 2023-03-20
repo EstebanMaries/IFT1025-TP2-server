@@ -9,19 +9,57 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
-//TODO : verify matricule and code of the classe entered by the user
+
+/**
+ * Client contient toutes les méthodes permettant de communiquer avec le serveur
+ * @author Esteban Maries 20235999, Herve Ngisse 20204609
+ *
+ */
 public class Client {
+
+    /**
+     * La demande de départ du serveur vers le client
+     */
     public final String MAINPROMPT = "1. Consulter les cours offerts pour une session\n2. S'inscrire à un cours";
+
+    /**
+     * Demande quelle session le client veut voir
+     */
     public final String SESSIONPROMPT = "Veuillez choisir la session pour laquelle vous voulez  consulter  la liste de cours:\n1. Automne\n2. Hiver\n3. Ete";
+
+    /**
+     * Correspond à l'espace ou le client doit entrer son choix
+     */
     public final String CHOICE = "> Choix: ";
+
+    /**
+     * La sortie des arguments du client vers le serveur
+     */
     private ObjectOutputStream objectOutputStream;
+
+    /**
+     * L'entrée des arguments du serveur vers le client
+     */
     private ObjectInputStream objectInputStream;
+
+    /**
+     * La prise du client
+     */
     private final Socket clientSocket;
 
 
+    /**
+     * Créer la prise du client avec le serveur
+     * @param port le port du serveur
+     * @throws IOException si une erreur arrive lors de l'initialisation de la prise
+     */
     public Client(int port) throws IOException {
         this.clientSocket = new Socket("127.0.0.1", port);
     }
+
+    /**
+     * Commence l'interaction du client avec le serveur.
+     */
     public void start() {
         try {
             this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -33,7 +71,10 @@ public class Client {
         }
     }
 
-    public void mainPrompt(){
+    /**
+     * Demande au client ce qu’il cherche à faire.
+     */
+    private void mainPrompt(){
         Scanner input = new Scanner(System.in);
         System.out.println(MAINPROMPT);
         System.out.print(CHOICE);
@@ -46,6 +87,9 @@ public class Client {
         }
     }
 
+    /**
+     * Inscrit le client au cours choisi.
+     */
     private void inscription(){
         String prenom,nom,email,matricule,code,session,cours;
         Scanner input = new Scanner(System.in);
@@ -67,13 +111,20 @@ public class Client {
         try{
             objectOutputStream.writeObject("INSCRIRE");
             objectOutputStream.writeObject(form);
-            System.out.println("Félicitations! Inscription réussie de "+prenom+" au cours "+cours+"\n");
-
+            if (objectInputStream.readBoolean()){
+                System.out.println("Félicitations! Inscription réussie de "+prenom+" au cours "+cours+"\n");
+            } else {
+                System.out.println("Les informations entrés sont incorrects.");
+            }
         } catch (IOException e){
             e.printStackTrace();
         }
     }
 
+    /**
+     * Imprime les cours de la session
+     * @param session la session choisie par le client
+     */
     private void getCourses(String session)  {
         ArrayList<Course> courses;
         try{
@@ -92,7 +143,11 @@ public class Client {
         }
     }
 
-    public String sessionSelection(){
+    /**
+     * Demande au client de choisir une session
+     * @return le choix du client
+     */
+    private String sessionSelection(){
         Scanner input = new Scanner(System.in);
         System.out.println(SESSIONPROMPT);
         System.out.print(CHOICE);
@@ -106,7 +161,4 @@ public class Client {
         }
          return "";
     }
-
-
-
 }

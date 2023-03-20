@@ -24,6 +24,12 @@
             <artifactId>javafx-base</artifactId>
             <version>19.0.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -92,6 +98,15 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <destDir>javadoc</destDir>
+                </configuration>
             </plugin>
         </plugins>
     </build>

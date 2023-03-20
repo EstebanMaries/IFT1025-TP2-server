@@ -1,4 +1,4 @@
-package client;
+package client.ClientSimple;
 
 /**
  * ClientLauncher commence la connection du client avec le serveur

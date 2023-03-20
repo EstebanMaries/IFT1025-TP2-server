@@ -114,7 +114,7 @@ public class Client {
             if (objectInputStream.readBoolean()){
                 System.out.println("Félicitations! Inscription réussie de "+prenom+" au cours "+cours+"\n");
             } else {
-                System.out.println("Les informations entrés sont incorrects.");
+                System.out.println("Les informations entrées sont incorrectes.");
             }
         } catch (IOException e){
             e.printStackTrace();

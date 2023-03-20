@@ -9,6 +9,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Server {
 
@@ -158,7 +161,6 @@ public class Server {
             FileReader classes = new FileReader("src/main/java/server/data/cours.txt");
             BufferedReader reader = new BufferedReader(classes);
             String line;
-            System.out.println("Gathering courses...");
             while ((line = reader.readLine()) != null) {
                 String[] content = line.split("\t");
                 if (content[2].equals(arg)) {
@@ -194,10 +196,12 @@ public class Server {
                 nom = rForm.getNom();
                 email = rForm.getEmail();
                 course = rForm.getCourse();
-                if( Integer.parseInt(matricule)<=999999 && Integer.parseInt(matricule)>=100000 && checkCourse(course)) {
+                if( checkMatricule(matricule) && checkCourse(course) && checkEmail(email)) {
                     writer.append(session).append("\t").append(code).append("\t").append(matricule).append("\t").append(prenom).append("\t").append(nom).append("\t").append(email).append("\t\n");
                     writer.close();
+                    objectOutputStream.writeBoolean(true);
                 } else {
+                    // TODO return to the client which information is wrong
                     objectOutputStream.writeBoolean(false);
                 }
 
@@ -206,6 +210,22 @@ public class Server {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private boolean checkEmail(String email) {
+        Pattern EMAIL_PATTERN  = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+        Matcher matcher = EMAIL_PATTERN.matcher(email);
+        return matcher.matches();
+    }
+
+    /**
+     * Vérifie que le matricule donné par le client est valide.
+     * @param matricule le matricule entré par le client
+     * @return la validité du matricule
+     */
+    private boolean checkMatricule(String matricule) {
+        int matriculeInt = Integer.parseInt(matricule);
+        return matriculeInt<=99999999 && matriculeInt >=10000000;
     }
 
     /**
@@ -220,13 +240,18 @@ public class Server {
         try {
             FileReader classes = new FileReader("src/main/java/server/data/cours.txt");
             BufferedReader reader = new BufferedReader(classes);
-            System.out.println("Gathering courses...");
             while ((line = reader.readLine()) != null) {
                 content = line.split("\t");
                 Courses.add(new Course(content[1], content[0], content[2]));
             }
             reader.close();
-            return Courses.contains(course);
+            for (Course courseI:Courses){
+                if (Objects.equals(courseI.getCode(), course.getCode()) &&
+                        Objects.equals(courseI.getName(), course.getName()) &&
+                        Objects.equals(courseI.getSession(), course.getSession())){
+                    return true;
+                }
+            } return false;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -1,19 +1,28 @@
 package view;
 
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import view.models.InscriptionController;
+
 public class InscriptionView {
+    @FXML
     private TextField firstNameField;
+    @FXML
     private TextField lastNameField;
+    @FXML
     private TextField emailField;
+    @FXML
     private TextField matriculeField;
+    @FXML
     private Button sendButton;
     private Button defilementButton;
     private Button changeButton;
@@ -47,7 +56,6 @@ public class InscriptionView {
         // Add left column headers and data to left column
         leftColumn.getChildren().addAll(leftColumnHeaders, leftColumnData);
 
-        // Define right column form
         GridPane form = new GridPane();
         form.setHgap(10);
         form.setVgap(5);
@@ -69,20 +77,18 @@ public class InscriptionView {
         form.addRow(3, matriculeLabel, matriculeField);
         form.addRow(4, sendButton);
 
-        // Add form to right column
         setCenter(form);
-        // Define bottom row buttons
+
         defilementButton = new Button("session");
         changeButton = new Button("Changer");
-        bottomRow.getChildren().addAll(defilementButton, changeButton);
-        bottomRow.setAlignment(Pos.CENTER_RIGHT);
+       // TextField bottomRow;
+       // bottomRow.getChildren().addAll(defilementButton, changeButton);
+       // bottomRow.setAlignment(Pos.CENTER_RIGHT);
 
-        // Add bottom row to main column
-        setBottom(bottomRow);
+        //setBottom(bottomRow);
 
-        // Set view properties
-        setPadding(new Insets(10));
-        setPrefSize(800, 600);
+        //setPadding(new Insets(10));
+        //setPrefSize(800, 600);
     }
 
     private void setCenter(GridPane form) {
@@ -120,35 +126,12 @@ public class InscriptionView {
         matriculeField.setText(matricule);
     }
 
-    public void addSendButtonListener(EventHandler<ActionEvent> listener) {
-        sendButton.setOnAction(listener);
+
+
+    public void addDefilementButtonListener(InscriptionController.send  sendListener) {
     }
 
-    public void addDefilementButtonListener(EventHandler<ActionEvent> listener) {
-        defilementButton.setOnAction(listener);
-    }
-
-    public void addChangeButtonListener(EventHandler<ActionEvent> listener) {
-        changeButton.setOnAction(listener);
-    }
-
-    public void updateLeftColumnData(String[][] data) {
-        for (int i = 0; i < data.length; i++) {
-            String[] row = data[i];
-            Label codeLabel = new Label(row[0]);
-            Label courseLabel = new Label(row[1]);
-            leftColumnData.add(codeLabel, 0, i);
-            leftColumnData.add(courseLabel, 1, i);
-        }
-    }
-
-    public void addSendButtonListener(StudentFormController.SendButtonListener sendButtonListener) {
-    }
-
-    public void addDefilementButtonListener(StudentFormController.DefilementButtonListener defilementButtonListener) {
-    }
-
-    public void addChangeButtonListener(StudentFormController.ChangeButtonListener changeButtonListener) {
+    public void addChangeButtonListener(InscriptionController.ChangeButtonListener changeButtonListener) {
     }
 }
 

@@ -1,7 +1,4 @@
 package view.models;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import view.InscriptionView;
 
 public class InscriptionController {
     private InscriptionView view;

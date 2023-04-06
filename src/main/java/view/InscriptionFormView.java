@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.javafx.stage.EmbeddedWindow;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,7 +13,7 @@ import javafx.stage.Stage;
 import server.models.Course;
 import server.models.RegistrationForm;
 
-import java.io.IOException;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,6 +63,7 @@ public class InscriptionFormView extends Application {
         // Ajouter les éléments à afficher pour le bouton session
         List<String> listSession = Arrays.asList("Automne", "Hiver", "Eté");
 
+
         // Ajouter un menu contextuel pour le bouton session avec les éléments à afficher
         ContextMenu contextMenuSession = new ContextMenu();
         for (String showSession : listSession) {
@@ -71,12 +71,15 @@ public class InscriptionFormView extends Application {
             menuItem.setOnAction(event -> {
                 // Stocker la session sélectionnée
                 selectedSession = showSession;
+               // selectedSession.setselectedSession(selectedSession);
                 // Afficher la session sélectionné
                 System.out.println(showSession);
             });
             contextMenuSession.getItems().add(menuItem);
         }
         session.setContextMenu(contextMenuSession);
+        //
+
         //action pour afficher les cours
        // charger.setOnAction(e -> handleShowCourseBtn());
     }
@@ -86,7 +89,7 @@ public class InscriptionFormView extends Application {
         // Créer les champs de formulaire
         firstNameField = new TextField();
         firstNameField.setPromptText("Prénom");
-        nameField = new TextField();
+        firstNameField = new TextField();
         nameField.setPromptText("Nom");
         emailField = new TextField();
         emailField.setPromptText("Email");
@@ -97,7 +100,7 @@ public class InscriptionFormView extends Application {
         grid.addRow(1, nameField);
         grid.addRow(2, emailField);
         grid.addRow(3, matriculeField);
-
+        RegistrationForm form = new RegistrationForm(firstNameField,firstNameField, emailField,  matriculeField, new Course(cours,code, session));
         // Créer un bouton pour envoyer les données
         Button sendButton = new Button("Envoyer");
        // sendButton.setOnAction(e -> handlesendButton());
@@ -108,5 +111,14 @@ public class InscriptionFormView extends Application {
 
 
     }
+    public String getSelectedSession(String selectedSession) {
+        return this.selectedSession = selectedSession;
+    }
+    public void setSelectedSession(String selectedSession){
+        this.selectedSession= selectedSession;
+    }
+
+
+
 }
 

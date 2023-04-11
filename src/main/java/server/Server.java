@@ -158,7 +158,7 @@ public class Server {
     public void handleLoadCourses(String arg) {
         ArrayList<Course> relevantClasses = new ArrayList<>();
         try {
-            FileReader classes = new FileReader("src/main/java/server/data/cours.txt");
+            FileReader classes = new FileReader("data/cours.txt");
             BufferedReader reader = new BufferedReader(classes);
             String line;
             while ((line = reader.readLine()) != null) {
@@ -180,34 +180,59 @@ public class Server {
          @throws Exception ClassNotFoundException si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
          */
     public void handleRegistration() {
-        String session,code,matricule,prenom,nom,email;
+        String session, code, matricule, prenom, nom, email;
+
         Course course;
         BufferedWriter writer;
-        RegistrationForm rForm;
+        ArrayList<Integer> errors = new ArrayList<>();
         try {
             Object form = objectInputStream.readObject();
-            if (form instanceof RegistrationForm){
-                rForm = (RegistrationForm) form;
-                writer = new BufferedWriter(new FileWriter("src/main/java/server/data/inscription.txt", true));
-                session = rForm.getCourse().getSession();
-                code = rForm.getCourse().getCode();
-                matricule = rForm.getMatricule();
+            if (form instanceof RegistrationForm rForm){
                 prenom = rForm.getPrenom();
                 nom = rForm.getNom();
                 email = rForm.getEmail();
+                matricule = rForm.getMatricule();
                 course = rForm.getCourse();
-                if( checkMatricule(matricule) && checkCourse(course) && checkEmail(email)) {
+                session = course.getSession();
+                code = course.getCode();
+
+                if (!prenom.matches("^[a-zA-Z]+$")){
+                    errors.add(1);
+                } else {
+                    errors.add(0);
+                }
+                if(!nom.matches("^[a-zA-Z]+$")) {
+                    errors.add(1);
+                } else {
+                    errors.add(0);
+                }
+                if (!checkEmail(email)){
+                    errors.add(1);
+                } else {
+                    errors.add(0);
+                }
+                if (!checkMatricule(matricule)){
+                    errors.add(1);
+                } else {
+                    errors.add(0);
+                }
+                if (!checkCourse(course)){
+                    errors.add(1);
+                } else {
+                    errors.add(0);
+                }
+                if( !errors.contains(1)) {
+                    System.out.println("if");
+                    writer = new BufferedWriter(new FileWriter("data/inscription.txt", true));
                     writer.append(session).append("\t").append(code).append("\t").append(matricule).append("\t").append(prenom).append("\t").append(nom).append("\t").append(email).append("\t\n");
                     writer.close();
-                    objectOutputStream.writeBoolean(true);
+                    objectOutputStream.writeObject(true);
                 } else {
-                    // TODO return to the client which information is wrong
-                    objectOutputStream.writeBoolean(false);
+                    objectOutputStream.writeObject(errors);
                 }
-
-
             }
         } catch (Exception e) {
+            System.out.println("excpet");
             throw new RuntimeException(e);
         }
     }
@@ -238,7 +263,7 @@ public class Server {
         String[] content;
         String line;
         try {
-            FileReader classes = new FileReader("src/main/java/server/data/cours.txt");
+            FileReader classes = new FileReader("data/cours.txt");
             BufferedReader reader = new BufferedReader(classes);
             while ((line = reader.readLine()) != null) {
                 content = line.split("\t");

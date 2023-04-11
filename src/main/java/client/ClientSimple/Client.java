@@ -107,17 +107,26 @@ public class Client {
         session = input.next();
         System.out.print("Veuillez saisir le nom du cours: ");
         cours = input.next();
-        RegistrationForm form = new RegistrationForm(prenom, nom, email, matricule, new Course(cours,code, session));
+        RegistrationForm form = new RegistrationForm(prenom, nom, email, matricule, new Course(cours, code, session));
         try{
             objectOutputStream.writeObject("INSCRIRE");
             objectOutputStream.writeObject(form);
-            if (objectInputStream.readBoolean()){
+            Object answer = objectInputStream.readObject();
+            if (answer instanceof Boolean){
                 System.out.println("Félicitations! Inscription réussie de "+prenom+" au cours "+cours+"\n");
             } else {
-                System.out.println("Les informations entrées sont incorrectes.");
+                System.out.println("Erreurs");
+                ArrayList<Integer> info = (ArrayList<Integer>) answer;
+                if (info.get(0) == 1) System.out.println("Le prénom est incorrect.");
+                if (info.get(1) == 1) System.out.println("Le nom est incorrect.");
+                if (info.get(2) == 1) System.out.println("Le mail est incorrect.");
+                if (info.get(3) == 1) System.out.println("Le matricule est incorrect.");
+                if (info.get(4) == 1) System.out.println("Le cours est incorrect.");
             }
         } catch (IOException e){
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -159,6 +168,6 @@ public class Client {
         } else if (choice==3){
             return "Ete";
         }
-         return "";
+        return "";
     }
 }

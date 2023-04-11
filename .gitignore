@@ -10,4 +10,4 @@ target/*
 src/main/java/server/data/inscription.txt
 src/main/java/server/data/cours.txt
 src/main/MANIFEST.MF
-data/inscription.txt
+src/main/java/server/data/inscription.txt

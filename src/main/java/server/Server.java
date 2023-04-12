@@ -174,11 +174,11 @@ public class Server {
         }
     }
 
-        /**
-         Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', l'enregistrer dans un fichier texte
-         et renvoyer un message de confirmation au client.
-         @throws Exception ClassNotFoundException si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
-         */
+    /**
+     Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', l'enregistrer dans un fichier texte
+     et renvoyer un message de confirmation au client.
+     @throws Exception ClassNotFoundException si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
+     */
     public void handleRegistration() {
         String session, code, matricule, prenom, nom, email;
 
@@ -237,6 +237,11 @@ public class Server {
         }
     }
 
+    /**
+     * Verifie que le mail donné par le client est valide.
+     * @param email le mail entré par le client
+     * @return la validité du mail
+     */
     private boolean checkEmail(String email) {
         Pattern EMAIL_PATTERN  = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
         Matcher matcher = EMAIL_PATTERN.matcher(email);

@@ -1,13 +1,16 @@
 package client.ClientFX;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.layout.BorderPane;
-import java.util.Arrays;
-import java.util.List;
+import javafx.util.Callback;
+import server.models.Course;
 
 
 public class InscriptionView extends BorderPane {
@@ -22,7 +25,12 @@ public class InscriptionView extends BorderPane {
     private Button session = new Button("Choisir une session");
     private Button charger = new Button("charger");
     private Button sendButton = new Button("Envoyer");
+    private TableView<String[]> tableView;
     private ContextMenu contextMenuSession;
+    private ObjectProperty<String[]> selectedCourse = new SimpleObjectProperty<>();
+
+// Getter pour la propriété Observable
+
     public InscriptionView() {
         columnLeft();
         columnRight();
@@ -33,13 +41,25 @@ public class InscriptionView extends BorderPane {
 
     public void columnLeft() {
         // Créer le tableau
-        TableView<String[]> tableView = new TableView<>();
+        tableView = new TableView<>();
         TableColumn<String[], String> columnCode = new TableColumn<>("Code");
         columnCode.setPrefWidth(150);
         columnCode.setStyle("-fx-alignment: CENTER;");
         TableColumn<String[], String> columnCourse = new TableColumn<>("Cours");
         columnCourse.setPrefWidth(250);
         columnCourse.setStyle("-fx-alignment: CENTER;");
+        //pour afficher les elements dans les cellules.
+        columnCourse.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<String[], String> p) {
+                return new SimpleStringProperty(p.getValue()[1]);
+            }
+        });
+        columnCode.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<String[], String> p) {
+                return new SimpleStringProperty(p.getValue()[0]);
+            }
+        });
+        //ajoute les deux colonnes au tableau
         tableView.getColumns().addAll(columnCode, columnCourse);
         // permet à la table de redimensionner les colonnes automatiquement en fonction de la taille de la table
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -55,7 +75,7 @@ public class InscriptionView extends BorderPane {
         MenuItem Automne = new MenuItem("Automne");
         MenuItem Hiver = new MenuItem("Hiver");
         MenuItem Ete = new MenuItem("Eté");
-
+        //ajoute les elements au contextMenu
         contextMenuSession.getItems().addAll(Automne,Hiver,Ete);
         session.setContextMenu(contextMenuSession);
 
@@ -121,9 +141,7 @@ public class InscriptionView extends BorderPane {
     }
 
 
-    // private Course getSelectedCourse() {
-    //     return null;
-    //  }
+    //les getters et setter de tous les attributs,boutons,etc
     public ContextMenu getContextMenuSession() {
         return this.contextMenuSession;
     }
@@ -143,5 +161,49 @@ public class InscriptionView extends BorderPane {
     public String getSelectedSession() {
         return this.selectedSession;
     }
-}
+    public TableView<String[]> getTableView() {
+        return tableView;
+    }
+    // public ObjectProperty<String[]> selectedCourseProperty() {
+    //     return selectedCourse;
+    // }
+    // public String getSelectedCourse() {
+    //     String[] selected = selectedCourse.get();
+    //     if (selected != null) {
+    //         return selected[0] + " (" + selected[1] + ")";
+    //     }
+    //     return "";
+    //return selectedCourse;
+    // }
+    public Course getSelectedCourse() {
+        String[] selectedCourseArray = selectedCourse.get();
+        if (selectedCourseArray == null) {
+            return null;
+        }
+        String courseName = selectedCourseArray[0];
+        String courseCode = selectedCourseArray[1];
+        String courseSession = selectedCourseArray[2];
+        return new Course(selectedCourseArray[0], selectedCourseArray[1], selectedCourseArray[2]);
+    }
+    // Setter pour la propriété Observable
+    public void setSelectedCourse(String[] course) {
+        selectedCourse.set(course);
+    }
+    // public TextField getFirstName() {
+    //     return firstName;
+    //}
+    public String getFirstName() {
+        return firstName.getText();
+    }
+    public String getName() {
+        return name.getText();
+    }
+    public String getEmail() {
+        return  email.getText();
+    }
+    public String getMatricule() {
+        return matricule.getText();
+    }
 
+
+}

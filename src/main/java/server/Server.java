@@ -105,7 +105,9 @@ public class Server {
      */
     public void listen() throws IOException, ClassNotFoundException {
         String line;
-        if ((line = this.objectInputStream.readObject().toString()) != null) {
+        /**
+         * modification de if en while pour eviter la deconnection du serveur**/
+        while ((line = this.objectInputStream.readObject().toString()) != null) {
             Pair<String, String> parts = processCommandLine(line);
             String cmd = parts.getKey();
             String arg = parts.getValue();

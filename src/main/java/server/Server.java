@@ -73,8 +73,9 @@ public class Server {
      * Mets en action les événements ajoutés.
      * @param cmd la commande à renvoyer
      * @param arg l’argument a donné à la commande.
+     * @throws IOException si une erreur survient lors de la gestion des commandes
      */
-    private void alertHandlers(String cmd, String arg) {
+    private void alertHandlers(String cmd, String arg) throws IOException {
         for (EventHandler h : this.handlers) {
             h.handle(cmd, arg);
         }
@@ -101,13 +102,13 @@ public class Server {
 
     /**
      * Récupère les entrées du client.
-     * @throws IOException, ClassNotFoundException si une erreur se produit lors de la lecture des entrées.
+     * @throws IOException si une erreur se produit lors de la lecture des entrées.
+     * @throws ClassNotFoundException si une classe n’est pas trouvé
      */
     public void listen() throws IOException, ClassNotFoundException {
         String line;
-        /**
-         * modification de if en while pour eviter la deconnection du serveur**/
-        while ((line = this.objectInputStream.readObject().toString()) != null) {
+
+       if ((line = this.objectInputStream.readObject().toString()) != null) {
             Pair<String, String> parts = processCommandLine(line);
             String cmd = parts.getKey();
             String arg = parts.getValue();
@@ -141,8 +142,9 @@ public class Server {
      * Gère la commande donnée.
      * @param cmd la commande à traiter
      * @param arg l'argument a utilisé avec la commande.
+     * @throws IOException lorsqu'une erreur survient lors de la manipulation des fichiers
      */
-    public void handleEvents(String cmd, String arg) {
+    public void handleEvents(String cmd, String arg) throws IOException {
         if (cmd.equals(REGISTER_COMMAND)) {
             handleRegistration();
         } else if (cmd.equals(LOAD_COMMAND)) {
@@ -155,9 +157,8 @@ public class Server {
      La méthode filtre les cours par la session spécifiée en argument.
      Ensuite, elle renvoie la liste des cours pour une session au client en utilisant l'objet 'objectOutputStream'.
      @param arg la session pour laquelle on veut récupérer la liste des cours
-     @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux
      */
-    public void handleLoadCourses(String arg) {
+    public void handleLoadCourses(String arg) throws IOException {
         ArrayList<Course> relevantClasses = new ArrayList<>();
         try {
             FileReader classes = new FileReader("data/cours.txt");
@@ -172,6 +173,7 @@ public class Server {
             objectOutputStream.writeObject(relevantClasses);
             reader.close();
         } catch (Exception e) {
+            objectOutputStream.writeObject("\nUne erreur est survenue lors de la lecture du fichier\n");
             throw new RuntimeException(e);
         }
     }
@@ -179,9 +181,9 @@ public class Server {
     /**
      Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', l'enregistrer dans un fichier texte
      et renvoyer un message de confirmation au client.
-     @throws Exception ClassNotFoundException si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
+     La méthode gère les exceptions si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.
      */
-    public void handleRegistration() {
+    public void handleRegistration() throws IOException {
         String session, code, matricule, prenom, nom, email;
 
         Course course;
@@ -189,7 +191,8 @@ public class Server {
         ArrayList<Integer> errors = new ArrayList<>();
         try {
             Object form = objectInputStream.readObject();
-            if (form instanceof RegistrationForm rForm){
+            if (form instanceof RegistrationForm){
+                RegistrationForm rForm = (RegistrationForm) form;
                 prenom = rForm.getPrenom();
                 nom = rForm.getNom();
                 email = rForm.getEmail();
@@ -224,7 +227,6 @@ public class Server {
                     errors.add(0);
                 }
                 if( !errors.contains(1)) {
-                    System.out.println("if");
                     writer = new BufferedWriter(new FileWriter("data/inscription.txt", true));
                     writer.append(session).append("\t").append(code).append("\t").append(matricule).append("\t").append(prenom).append("\t").append(nom).append("\t").append(email).append("\t\n");
                     writer.close();
@@ -234,13 +236,13 @@ public class Server {
                 }
             }
         } catch (Exception e) {
-            System.out.println("excpet");
+            objectOutputStream.writeObject("\nUne erreur est survenue lors de la lecture du fichier\n");
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * Verifie que le mail donné par le client est valide.
+     * Vérifie que le mail donné par le client est valide.
      * @param email le mail entré par le client
      * @return la validité du mail
      */

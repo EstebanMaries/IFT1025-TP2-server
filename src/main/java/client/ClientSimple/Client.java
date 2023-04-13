@@ -84,6 +84,8 @@ public class Client {
             getCourses(session);
         } else if (choice==2){
             inscription();
+        } else {
+            mainPrompt();
         }
     }
 
@@ -114,6 +116,8 @@ public class Client {
             Object answer = objectInputStream.readObject();
             if (answer instanceof Boolean){
                 System.out.println("Félicitations! Inscription réussie de "+prenom+" au cours "+cours+"\n");
+            } else if(answer instanceof String)  {
+                System.out.println("\n"+answer+"\n");
             } else {
                 System.out.println("Erreurs");
                 ArrayList<Integer> info = (ArrayList<Integer>) answer;
@@ -134,7 +138,7 @@ public class Client {
      * Imprime les cours de la session
      * @param session la session choisie par le client
      */
-    private void getCourses(String session)  {
+    private void getCourses(String session) {
         ArrayList<Course> courses;
         try{
             objectOutputStream.writeObject("CHARGER "+session);
@@ -146,8 +150,10 @@ public class Client {
                     Course course = courses.get(i);
                     System.out.println((i+1)+"\t"+course.getName()+"\t"+course.getCode());
                 }
+            } else {
+                System.out.println(obj);
             }
-        } catch (IOException | ClassNotFoundException e){
+        } catch (Exception e){
             throw new RuntimeException(e);
         }
     }
@@ -167,7 +173,8 @@ public class Client {
             return "Hiver";
         } else if (choice==3){
             return "Ete";
+        } else {
+            return sessionSelection();
         }
-        return "";
     }
 }

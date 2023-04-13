@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Client</title>
-  <link rel="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+  <!--<link rel="stylesheet" type="text/css" href="stylesheet.css" title="Style">-->
 </head>
 <body>
 <div class="header">
@@ -28,7 +28,7 @@
       <td>
         Créer la prise du client avec le serveur<br>
         @param port le port du serveur<br>
-        <code>@throws IOException si une erreur arrive lors de l'initialisation de la prise
+        @throws IOException si une erreur arrive lors de l'initialisation de la prise
       </td>
     </tr>
     </tbody>
@@ -47,72 +47,32 @@
     <tbody>
     <tr>
       <td><code>public void</code></td>
-      <td><code><strong>addEventHandler</strong></code></td>
-      <td>Ajoute un événement h au géreur d’événements.<br>
-        @param h de type EventHandler, l’événement à ajouter.</td>
+      <td><code><strong>start</strong></code></td>
+      <td>Commence l'interaction du client avec le serveur.</td>
     </tr>
     <tr>
       <td><code>private void</code></td>
-      <td><code><strong>alertHandlers</strong></code></td>
-      <td>Mets en action les événements ajoutés.<br>
-        @param cmd la commande à renvoyer.<br>
-        @param arg l’argument a donné à la commande.
+      <td><code><strong>mainPrompt</strong></code></td>
+      <td>Demande au client ce qu’il cherche à faire.</td>
+    </tr>
+    <tr>
+      <td><code>private void</code></td>
+      <td><code><strong>inscription</strong></code></td>
+      <td>Inscrit le client au cours choisi.</td>
+    </tr>
+    <tr>
+      <td><code>private void</code></td>
+      <td><code><strong>getCourses</strong></code></td>
+      <td>Imprime les cours de la session<br>
+        @param session la session choisie par le client<br>
       </td>
     </tr>
     <tr>
-      <td><code>public void</code></td>
-      <td><code><strong>run</strong></code></td>
-      <td>Rend le serveur capable de recevoir les requêtes d'un client</td>
-    </tr>
-    <tr>
-      <td><code>public void</code></td>
-      <td><code><strong>listen</strong></code></td>
-      <td>Récupère les entrées du client.<br>
-        @throws IOException, ClassNotFoundException si une erreur se produit lors de la lecture des entrées.</td>
-    </tr>
-    <tr>
-      <td><code>public Pair String, String</code></td>
-      <td><code><strong>processCommandLine</strong></code></td>
-      <td>Mets en page la commande obtenue.<br>
-        @param line une commande<br>
-        @return Pair la separation entre le nom de la commande et son argument</td>
-    </tr>
-    <tr>
-      <td><code>public void</code></td>
-      <td><code><strong>disconnect</strong></code></td>
-      <td>Déconnecte le client du serveur.<br>
-        @throws IOException si une erreur se produit lors de la déconnection.</td>
-    </tr>
-    <tr>
-      <td><code>public void</code></td>
-      <td><code><strong>handleEvents</strong></code></td>
-      <td>Gère la commande donnée.<br>
-        @param cmd la commande à traiter<br>
-        @param arg l'argument a utilisé avec la commande.</td>
-    </tr>
-    <tr>
-      <td><code>public void</code></td>
-      <td><code><strong>handleLoadCourses</strong></code></td>
-      <td>Lire un fichier texte contenant des informations sur les cours et les transformer en liste d'objets 'Course'.
-        La méthode filtre les cours par la session spécifiée en argument.
-        Ensuite, elle renvoie la liste des cours pour une session au client en utilisant l'objet 'objectOutputStream'.<br>
-        @param arg la session pour laquelle on veut récupérer la liste des cours<br>
-        @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux</td>
-    </tr>
-    <tr>
-      <td><code>public void</code></td>
-      <td><code><strong>handleRegistration</strong></code></td>
-      <td>Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream',
-        l'enregistrer dans un fichier texte et renvoyer un message de confirmation au client.<br>
-        @throws Exception si une erreur se produit lors de la lecture de l'objet,
-        l'écriture dans un fichier ou dans le flux de sortie.</td>
-    </tr>
-    <tr>
-      <td><code>private boolean</code></td>
-      <td><code><strong>checkCourse</strong></code></td>
-      <td>Vérifie que les infos du cours donnés par le client existent.<br>
-        @param course le cours entré par le client<br>
-        @return la présence ou non du cours dans cours.txt</td>
+      <td><code>private String</code></td>
+      <td><code><strong>sessionSelection</strong></code></td>
+      <td>Demande au client de choisir une session<br>
+          @return le choix du client
+      </td>
     </tr>
     </tbody>
   </table>

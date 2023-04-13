@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Server</title>
-    <link rel="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+    <!--<link rel="stylesheet" type="text/css" href="stylesheet.css" title="Style">-->
 </head>
 <body>
     <div class="header">
@@ -49,14 +49,16 @@
                     <td><code>public void</code></td>
                     <td><code><strong>addEventHandler</strong></code></td>
                     <td>Ajoute un événement h au géreur d’événements.<br>
-                        @param h de type EventHandler, l’événement à ajouter.</td>
+                        @param h de type EventHandler, l’événement à ajouter.
+                    </td>
                 </tr>
                 <tr>
                     <td><code>private void</code></td>
                     <td><code><strong>alertHandlers</strong></code></td>
                     <td>Mets en action les événements ajoutés.<br>
                         @param cmd la commande à renvoyer.<br>
-                        @param arg l’argument a donné à la commande.
+                        @param arg l’argument a donné à la commande.<br>
+                        @throws IOException si une erreur survient lors de la gestion des commandes
                     </td>
                 </tr>
                 <tr>
@@ -68,27 +70,33 @@
                     <td><code>public void</code></td>
                     <td><code><strong>listen</strong></code></td>
                     <td>Récupère les entrées du client.<br>
-                        @throws IOException, ClassNotFoundException si une erreur se produit lors de la lecture des entrées.</td>
+                        @throws IOException si une erreur se produit lors de la lecture des entrées.<br>
+                        @throws ClassNotFoundException si une classe n’est pas trouvé
+                    </td>
                 </tr>
                 <tr>
                     <td><code>public Pair String, String</code></td>
                     <td><code><strong>processCommandLine</strong></code></td>
                     <td>Mets en page la commande obtenue.<br>
                         @param line une commande<br>
-                        @return Pair la separation entre le nom de la commande et son argument</td>
+                        @return Pair la separation entre le nom de la commande et son argument
+                    </td>
                 </tr>
                 <tr>
                     <td><code>public void</code></td>
                     <td><code><strong>disconnect</strong></code></td>
                     <td>Déconnecte le client du serveur.<br>
-                        @throws IOException si une erreur se produit lors de la déconnection.</td>
+                        @throws IOException si une erreur se produit lors de la déconnection.
+                    </td>
                 </tr>
                 <tr>
                     <td><code>public void</code></td>
                     <td><code><strong>handleEvents</strong></code></td>
                     <td>Gère la commande donnée.<br>
                         @param cmd la commande à traiter<br>
-                        @param arg l'argument a utilisé avec la commande.</td>
+                        @param arg l'argument a utilisé avec la commande.<br>
+                        @throws IOException lorsqu'une erreur survient lors de la manipulation des fichiers
+                    </td>
                 </tr>
                 <tr>
                     <td><code>public void</code></td>
@@ -97,15 +105,29 @@
                         La méthode filtre les cours par la session spécifiée en argument.
                         Ensuite, elle renvoie la liste des cours pour une session au client en utilisant l'objet 'objectOutputStream'.<br>
                         @param arg la session pour laquelle on veut récupérer la liste des cours<br>
-                        @throws Exception si une erreur se produit lors de la lecture du fichier ou de l'écriture de l'objet dans le flux</td>
+                    </td>
                 </tr>
                 <tr>
                     <td><code>public void</code></td>
                     <td><code><strong>handleRegistration</strong></code></td>
-                    <td>Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', 
-                        l'enregistrer dans un fichier texte et renvoyer un message de confirmation au client.<br>
-                        @throws Exception si une erreur se produit lors de la lecture de l'objet, 
-                        l'écriture dans un fichier ou dans le flux de sortie.</td>
+                    <td>Récupérer l'objet 'RegistrationForm' envoyé par le client en utilisant 'objectInputStream', l'enregistrer dans un fichier texte
+                        et renvoyer un message de confirmation au client.<br>
+                        La méthode gère les exceptions si une erreur se produit lors de la lecture de l'objet, l'écriture dans un fichier ou dans le flux de sortie.<br>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>private boolean</code></td>
+                    <td><code><strong>checkEmail</strong></code></td>
+                    <td>Vérifie que le mail donné par le client est valide.<br>
+                        @param email le mail entré par le client<br>
+                        @return la validité du mail</td>
+                </tr>
+                <tr>
+                    <td><code>private boolean</code></td>
+                    <td><code><strong>checkMatricule</strong></code></td>
+                    <td>Vérifie que le matricule donné par le client est valide.<br>
+                        @param matricule le matricule entré par le client<br>
+                        @return la validité du matricule</td>
                 </tr>
                 <tr>
                     <td><code>private boolean</code></td>

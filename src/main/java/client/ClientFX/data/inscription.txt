@@ -1,0 +1,5 @@
+6	5	4	1	2	3	
+Hiver	IFT1025	202359	2	2	2	
+Hiver	IFT1025	202359	2	2	2	
+Automne	IFT1015	20235999	Esteban	Maries	esteban.maries@umontreal.ca	
+Automne	IFT1015	20235999	Esteban	Maries	esteban.maries@umontreal.ca	

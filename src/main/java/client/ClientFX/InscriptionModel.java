@@ -1,4 +1,5 @@
 package client.ClientFX;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import server.models.RegistrationForm;
@@ -6,10 +7,9 @@ import server.models.RegistrationForm;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class InscriptionModel {
-    private static final String HOST = "localhost";
+    private static final String HOST = "127.0.0.1";
     private static final int PORT = 6060;
 
     private ObjectOutputStream objectOutputStream;

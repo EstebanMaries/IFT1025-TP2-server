@@ -1,3 +1,4 @@
-client
+client.ClientFX
+client.ClientSimple
 server
 server.models

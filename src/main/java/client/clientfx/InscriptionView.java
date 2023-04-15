@@ -1,4 +1,4 @@
-package client.ClientFX;
+package client.clientfx;
 
 import javafx.scene.Node;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -12,7 +12,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-
+/**
+ * ClientLauncher commence la connection du client avec le serveur
+ * @author Esteban Maries 20235999, Herve Ngisse 20204609
+ */
 public class InscriptionView extends BorderPane {
     private SplitPane splitPane;
     private VBox leftPane;

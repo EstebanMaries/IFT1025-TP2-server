@@ -161,7 +161,7 @@ public class Server {
     public void handleLoadCourses(String arg) throws IOException {
         ArrayList<Course> relevantClasses = new ArrayList<>();
         try {
-            FileReader classes = new FileReader("data/cours.txt");
+            FileReader classes = new FileReader("src/main/java/server/data/cours.txt");
             BufferedReader reader = new BufferedReader(classes);
             String line;
             while ((line = reader.readLine()) != null) {
@@ -191,7 +191,7 @@ public class Server {
         ArrayList<Integer> errors = new ArrayList<>();
         try {
             Object form = objectInputStream.readObject();
-            if (form instanceof RegistrationForm){
+            if (form instanceof RegistrationForm) {
                 RegistrationForm rForm = (RegistrationForm) form;
                 prenom = rForm.getPrenom();
                 nom = rForm.getNom();
@@ -200,28 +200,26 @@ public class Server {
                 course = rForm.getCourse();
                 session = course.getSession();
                 code = course.getCode();
-
-                if (!prenom.matches("^[a-zA-Z]+$")){
+                if (prenom.trim().isEmpty()) {
+                    errors.add(1);
+                } else if (!prenom.matches("^[a-zA-Z]+$")) {
                     errors.add(1);
                 } else {
                     errors.add(0);
                 }
-                if(!nom.matches("^[a-zA-Z]+$")) {
+                if (nom.trim().isEmpty()) {
+                    errors.add(1);
+                } else if (!nom.matches("^[a-zA-Z]+$")) {
                     errors.add(1);
                 } else {
                     errors.add(0);
                 }
-                if (!checkEmail(email)){
+                if (email.trim().isEmpty() || !checkEmail(email)) {
                     errors.add(1);
                 } else {
                     errors.add(0);
                 }
-                if (!checkMatricule(matricule)){
-                    errors.add(1);
-                } else {
-                    errors.add(0);
-                }
-                if (!checkCourse(course)){
+                if ( matricule.trim().isEmpty() || !isNumeric(matricule) || !checkMatricule(matricule)) {
                     errors.add(1);
                 } else {
                     errors.add(0);
@@ -289,5 +287,8 @@ public class Server {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    private boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");
     }
 }

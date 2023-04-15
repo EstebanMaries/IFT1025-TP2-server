@@ -1,16 +1,16 @@
-package client.ClientFX;
+package client.clientfx;
 
+import javafx.scene.Node;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import server.models.Course;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.layout.BorderPane;
-import javafx.util.Callback;
-import server.models.Course;
 
 
 public class InscriptionView extends BorderPane {
@@ -18,16 +18,17 @@ public class InscriptionView extends BorderPane {
     private VBox leftPane;
     private VBox rightPane;
     private String selectedSession= null;
-    private TextField firstName;
-    private TextField name;
-    private TextField email;
-    private TextField matricule;
-    private Button session = new Button("Choisir une session");
+    public TextField firstName;
+    public TextField name;
+    public TextField email;
+    public TextField matricule;
+    private Button session = new Button("Selectionnez une session");
     private Button charger = new Button("charger");
     private Button sendButton = new Button("Envoyer");
-    private TableView<String[]> tableView;
+    private TableView<Course> tableView;
     private ContextMenu contextMenuSession;
-    private ObjectProperty<String[]> selectedCourse = new SimpleObjectProperty<>();
+    private ObjectProperty<Course> selectedCourse = new SimpleObjectProperty<>();
+    private GridPane grid = new GridPane();
 
 // Getter pour la propriété Observable
 
@@ -42,23 +43,16 @@ public class InscriptionView extends BorderPane {
     public void columnLeft() {
         // Créer le tableau
         tableView = new TableView<>();
-        TableColumn<String[], String> columnCode = new TableColumn<>("Code");
+        TableColumn<Course, String> columnCode = new TableColumn<>("Code");
         columnCode.setPrefWidth(150);
         columnCode.setStyle("-fx-alignment: CENTER;");
-        TableColumn<String[], String> columnCourse = new TableColumn<>("Cours");
+        TableColumn<Course, String> columnCourse = new TableColumn<>("Cours");
         columnCourse.setPrefWidth(250);
         columnCourse.setStyle("-fx-alignment: CENTER;");
-        //pour afficher les elements dans les cellules.
-        columnCourse.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<String[], String> p) {
-                return new SimpleStringProperty(p.getValue()[1]);
-            }
-        });
-        columnCode.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<String[], String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<String[], String> p) {
-                return new SimpleStringProperty(p.getValue()[0]);
-            }
-        });
+        //pour afficher les noms des cours dans les cellules.
+        columnCourse.setCellValueFactory(new PropertyValueFactory<Course, String>("name"));
+        columnCode.setCellValueFactory(new PropertyValueFactory<Course, String>("code"));
+
         //ajoute les deux colonnes au tableau
         tableView.getColumns().addAll(columnCode, columnCourse);
         // permet à la table de redimensionner les colonnes automatiquement en fonction de la taille de la table
@@ -69,12 +63,12 @@ public class InscriptionView extends BorderPane {
         buttonsBox.setAlignment(Pos.BOTTOM_CENTER);
         buttonsBox.setPadding(new Insets(10));
 
-
+        session.setPrefSize(90, 27);
         // Ajouter les éléments à afficher pour le bouton session
         contextMenuSession = new ContextMenu();
         MenuItem Automne = new MenuItem("Automne");
         MenuItem Hiver = new MenuItem("Hiver");
-        MenuItem Ete = new MenuItem("Eté");
+        MenuItem Ete = new MenuItem("Ete");
         //ajoute les elements au contextMenu
         contextMenuSession.getItems().addAll(Automne,Hiver,Ete);
         session.setContextMenu(contextMenuSession);
@@ -106,15 +100,13 @@ public class InscriptionView extends BorderPane {
         VBox titleBox = new VBox(titleLabel);
         titleBox.setAlignment(Pos.CENTER); // centrer le titre
         titleBox.setPadding(new Insets(10, 0, 0, 0));
-
-        // Créer les champs de formulaire
+        // Créer le champs de formulaire
         firstName = new TextField();
         name = new TextField();
         email = new TextField();
         matricule = new TextField();
 
-        // Créer la grille de formulaire avec des étiquettes à gauche de chaque ligne
-        GridPane grid = new GridPane();
+        // GridPane grid = new GridPane();
         Label firstNameLabel = new Label("Prénom:");
         Label lastNameLabel = new Label("Nom:");
         Label emailLabel = new Label("Email:");
@@ -141,7 +133,7 @@ public class InscriptionView extends BorderPane {
     }
 
 
-    //les getters et setter de tous les attributs,boutons,etc
+    //les getters et setters de tous les attributs,boutons,etc
     public ContextMenu getContextMenuSession() {
         return this.contextMenuSession;
     }
@@ -161,37 +153,23 @@ public class InscriptionView extends BorderPane {
     public String getSelectedSession() {
         return this.selectedSession;
     }
-    public TableView<String[]> getTableView() {
+    public TableView<Course> getTableView() {
         return tableView;
     }
-    // public ObjectProperty<String[]> selectedCourseProperty() {
-    //     return selectedCourse;
-    // }
-    // public String getSelectedCourse() {
-    //     String[] selected = selectedCourse.get();
-    //     if (selected != null) {
-    //         return selected[0] + " (" + selected[1] + ")";
-    //     }
-    //     return "";
-    //return selectedCourse;
-    // }
+
     public Course getSelectedCourse() {
-        String[] selectedCourseArray = selectedCourse.get();
-        if (selectedCourseArray == null) {
+        Course selectedCourseObject = selectedCourse.get();
+        if (selectedCourseObject == null) {
             return null;
         }
-        String courseName = selectedCourseArray[0];
-        String courseCode = selectedCourseArray[1];
-        String courseSession = selectedCourseArray[2];
-        return new Course(selectedCourseArray[0], selectedCourseArray[1], selectedCourseArray[2]);
+        return new Course( selectedCourseObject.getName(),selectedCourseObject.getCode(),
+                selectedCourseObject.getSession());
     }
     // Setter pour la propriété Observable
-    public void setSelectedCourse(String[] course) {
+    public void setSelectedCourse(Course course) {
         selectedCourse.set(course);
     }
-    // public TextField getFirstName() {
-    //     return firstName;
-    //}
+
     public String getFirstName() {
         return firstName.getText();
     }
@@ -204,6 +182,37 @@ public class InscriptionView extends BorderPane {
     public String getMatricule() {
         return matricule.getText();
     }
+    //erreur
+    public void changeSessionButtonColor(String color) {
+        session.setStyle("-fx-border-color:" + color);
+    }
+    public void changetableBorder(String color){
+        tableView.setStyle("-fx-border-color:" + color );
+    }
+    public void changeGrid(String color){
+        BorderStroke borderStroke =
+                new BorderStroke(Color.valueOf(color), BorderStrokeStyle.SOLID, null, new BorderWidths(1));
+        Border border = new Border(borderStroke);
+        for (Node node : grid.getChildren()) {
+            if (node instanceof TextField) {
+                ((TextField) node).setBorder(border);
+            }
+        }
+    }
 
+    public void ConfirmationDialog(String firstName, String selectedCourse) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setHeaderText("Message de confirmation");
+        alert.setContentText("Félicitations!\nInscription réussie de "  + firstName+  " au cours " +selectedCourse);
+        alert.getButtonTypes().remove(ButtonType.CANCEL); // enlever le bouton Annuler
+        alert.showAndWait();
+    }
+    public void showAlert(String title, String header) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.showAndWait();
+    }
 
 }

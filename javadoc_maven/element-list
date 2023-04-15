@@ -1,4 +1,4 @@
-client.ClientFX
+client.clientfx
 client.ClientSimple
 server
 server.models

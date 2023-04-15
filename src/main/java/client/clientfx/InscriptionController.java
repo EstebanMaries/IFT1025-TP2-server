@@ -20,12 +20,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * gestion des interactions de l'utilisateur avec l'interface
- * avec comme Modele : RegistrationForm et Course
- * et Vue : InscriptionView
+ * InscriptionController est destine à gerer les interactions entre le client et le serveur via  :
+ * le modele : RegistrationForm et Course
+ * la Vue : InscriptionView
  * @author Esteban Maries 20235999, Herve Ngisse 20204609
  */
 public class InscriptionController {
+    /**
+     * permet d'acceder à InscriptionView
+     */
     private InscriptionView view;
     /**
      * selectionne la session
@@ -36,7 +39,10 @@ public class InscriptionController {
      */
     private boolean isWindowOpen = true;
 
+
     //     LES ATTRIBUTS ET OBJETS DE CONNEXION
+
+
     /**
      * adresse du serveur auquel le client veut se connecter
      */
@@ -44,7 +50,7 @@ public class InscriptionController {
     /**
      * Port du serveur auquel le client veut se connecter
      */
-    private static final int PORT = 1337;
+    private static final int PORT = 9090;
     /**
      * La sortie des arguments du client vers le serveur
      */
@@ -116,7 +122,7 @@ public class InscriptionController {
             try {
                 reconnect();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                errorAlert();
             }
         });
 
@@ -139,7 +145,7 @@ public class InscriptionController {
             try {
                 reconnect();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                errorAlert();
             }
         });
     }
@@ -153,8 +159,21 @@ public class InscriptionController {
      * @throws IOException
      */
     private void reconnect() throws IOException {
+        /**
+         * ferme le socket
+         */
+        if (clientSocket != null) {
+            try {
+                objectOutputStream.close();
+                objectInputStream.close();
+                clientSocket.close();
+            } catch (IOException e) {
+                errorAlert();
+            }
+        }
         this.clientSocket = new Socket(HOST, PORT);
-        start();
+        this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+        this.objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
     }
 
     /**
@@ -165,8 +184,9 @@ public class InscriptionController {
         try {
             this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             this.objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
+            System.out.println("Je suis ici 5");
         } catch (IOException e) {
-            e.printStackTrace();
+           errorAlert();
         }
     }
 
@@ -204,7 +224,7 @@ public class InscriptionController {
                      * si aucun cours n'est renvoye.le controlleur afficher le message d'erreur
                      */
                     if (courses.isEmpty()) {
-                        errorAlertLeft();
+                        errorAlert();
                         /**
                          * sinon il transforme la liste de cours en une liste observable
                          * ensuite il place les elements dans le tableau
@@ -222,7 +242,7 @@ public class InscriptionController {
              * si aucun cours n'est selectionne,il affiche un message d'erreur
              */
         } else {
-            errorAlertLeft();
+            errorAlert();
         }
     }
 
@@ -307,11 +327,11 @@ public class InscriptionController {
              * affiche les erreurs lient a la selection d'un cours
              */
         } else if (selectedSession == null && view.getSelectedCourse() == null) {
-            errorAlertLeft();
+            errorAlert();
         } else if (selectedSession == null) {
-            errorAlertLeft();
+            errorAlert();
         } else {
-            errorAlertLeft();
+            errorAlert();
         }
     }
 
@@ -348,7 +368,7 @@ public class InscriptionController {
     /**
      * affiche les erreurs et change la bordure en rouge
      */
-    private void errorAlertLeft() {
+    private void errorAlert() {
         if (selectedSession == null && view.getSelectedCourse() == null) {
             view.changeSessionButtonColor("red");
             view.changetableBorder("red");
@@ -356,9 +376,11 @@ public class InscriptionController {
         } else if (selectedSession == null ) {
             view.changeSessionButtonColor("red");
             view.showAlert("Session invalide", "Veuillez sélectionner une session");
-         }else{
+         }else if(view.getSelectedCourse() == null){
             view.changetableBorder("red");
             view.showAlert("Cours invalide", "Veuillez sélectionner un cours");
+        }else{
+            view.showAlert("erreur de connexion","impossible de se connecter au serveur");
         }
     }
 

@@ -76,9 +76,10 @@ public class InscriptionController {
 
         /**
          * Ajoute une action sur le bouton session dans le but d'afficher le menu contextuel
+         * et affiche les sessions dans le menu contextuel
          */
         this.view.getsessionButton().setOnAction((action) -> {
-            this.session();
+            view.getContextMenuSession().show(view.getsessionButton(), Side.BOTTOM, 0, 0);
         });
 
         /**
@@ -183,7 +184,7 @@ public class InscriptionController {
          */
         if (selectedSession != null) {
             /**
-             * essaie si la connexion est etabli
+             * essaie si la connexion est etablie
              */
             try {
                 /**
@@ -205,7 +206,7 @@ public class InscriptionController {
                     if (courses.isEmpty()) {
                         errorAlertLeft();
                         /**
-                         * sinon il transforme la liste de cours en une liste obsrvable
+                         * sinon il transforme la liste de cours en une liste observable
                          * ensuite il place les elements dans le tableau
                          */
                     } else {
@@ -221,7 +222,7 @@ public class InscriptionController {
              * si aucun cours n'est selectionne,il affiche un message d'erreur
              */
         } else {
-            errorSessionBtn();
+            errorAlertLeft();
         }
     }
 
@@ -229,22 +230,48 @@ public class InscriptionController {
      * Envoie la requete au serveur d'inscrire un etudiant a un cours
      */
     private void doInscription() {
+        /**
+         * envoie les informations ecrit dans le formulaire
+         */
         RegistrationForm form =
                 new RegistrationForm(view.getFirstName(), view.getName(), view.getEmail(), view.getMatricule(),
                         view.getSelectedCourse());
+        /**
+         * cree un tableau d'erreurs
+         */
         List<String> errorMsgs = new ArrayList<>();
+        /**
+         * verifie si un cours et selectionne dans le tableau
+         */
         if (view.getSelectedCourse() != null) {
+            /**
+             * essaie si la connexion est etablie
+             */
             try {
+                /**
+                 * envoie la requete INSCRIRE + l'objet form
+                 */
                 objectOutputStream.writeObject("INSCRIRE");
                 objectOutputStream.writeObject(form);
+                /**
+                 * lit la reponse du serveur
+                 */
                 Object answer = objectInputStream.readObject();
                 if (answer instanceof Boolean) {
                     confirmationRegistration();
                 } else if (answer instanceof String) {
                     System.out.println("\n" + answer + "\n");
                 } else {
+                    /**
+                     * defini la couleur du bordure
+                     */
                     BorderStroke borderStroke = new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
                     Border border = new Border(borderStroke);
+                    /**
+                     * condition pour chaque champs du formulaire
+                     * ajoute l'erreur dans le tableau
+                     * et change la bordure du champs
+                     */
                     ArrayList<Integer> info = (ArrayList<Integer>) answer;
                     if (info.get(0) == 1) {
                         view.firstName.setBorder(border);
@@ -262,6 +289,9 @@ public class InscriptionController {
                         view.matricule.setBorder(border);
                         errorMsgs.add("Le matricule est incorrect.");
                     }
+                    /**
+                     * affiche les erreurs si la liste n'est vide pas vide
+                     */
                     if (!errorMsgs.isEmpty()) {
                         StringBuilder sb = new StringBuilder();
                         for (String msg : errorMsgs) {
@@ -269,11 +299,13 @@ public class InscriptionController {
                         }
                         view.showAlert("Ces informations sont incorrecte", sb.toString());
                     }
-                    // Modifier la bordure des éléments correspondant aux erreurs
                 }
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
+            /**
+             * affiche les erreurs lient a la selection d'un cours
+             */
         } else if (selectedSession == null && view.getSelectedCourse() == null) {
             errorAlertLeft();
         } else if (selectedSession == null) {
@@ -283,29 +315,26 @@ public class InscriptionController {
         }
     }
 
+
+    //      METHODES
+
+
+    /**
+     * sauvegarde le cours selectionne dans le menu Contextuel
+     * recuperer la valeur deja dans le bouton et la remplace par
+     * affiche dans l'interface du bouton,le cours selectionnée dans le menu Contextuel
+     */
     private void changeValueBtnSession(ActionEvent action){
         MenuItem item = (MenuItem) action.getTarget();
-        /**
-         * sauvegarde le cours selectionne dans le menu Contextuel
-         */
         selectedSession = item.getText();
-        /**
-         * recuperer la valeur deja dans le bouton et la remplace par
-         */
         view.getsessionButton().setText(selectedSession);
-        /**
-         * affiche dans l'interface du bouton,le cours selectionnée dans le menu Contextuel
-         */
         view.setSelectedSession(selectedSession);
-        this.contextMenuSession();
+    }
 
-    }
-    private void setItemsInTab(){
-        view.getTableView().getSelectionModel().selectedItemProperty().
-                addListener((observable, oldValue, newValue) -> {
-                    view.setSelectedCourse(newValue);
-                });
-    }
+
+    /**
+     * initialise la couleur des bordures
+     */
     private void colorInitializer() {
         Border transparent = Border.EMPTY;
         view.changeSessionButtonColor("transparent");
@@ -316,27 +345,27 @@ public class InscriptionController {
         view.matricule.setBorder(transparent);
     }
 
-    private void contextMenuSession() {
-    }
-
-    private void session() {
-        view.getContextMenuSession().show(view.getsessionButton(), Side.BOTTOM, 0, 0);
-    }
+    /**
+     * affiche les erreurs et change la bordure en rouge
+     */
     private void errorAlertLeft() {
         if (selectedSession == null && view.getSelectedCourse() == null) {
             view.changeSessionButtonColor("red");
             view.changetableBorder("red");
             view.showAlert("Session invalide et cours invalide", "Veuillez sélectionner une session et un cours");
         } else if (selectedSession == null ) {
+            view.changeSessionButtonColor("red");
+            view.showAlert("Session invalide", "Veuillez sélectionner une session");
          }else{
             view.changetableBorder("red");
             view.showAlert("Cours invalide", "Veuillez sélectionner un cours");
         }
     }
-    private void errorSessionBtn(){
-        view.changeSessionButtonColor("red");
-        view.showAlert("Session invalide", "Veuillez sélectionner une session");
-    }
+
+    /**
+     * affiche le message de confirmation
+     * efface les elements dans le tableau,le formulaire et reinitialialise la valeur du bouton session
+     */
     private void confirmationRegistration(){
         view.ConfirmationDialog(view.getFirstName(), view.getSelectedCourse().getName());
         view.getTableView().getItems().clear();
@@ -346,5 +375,18 @@ public class InscriptionController {
         view.name.setText("");
         view.email.setText("");
         view.matricule.setText("");
+    }
+
+    //      SETTER
+
+
+    /**
+     * place les elements dans le tableau
+     */
+    private void setItemsInTab(){
+        view.getTableView().getSelectionModel().selectedItemProperty().
+                addListener((observable, oldValue, newValue) -> {
+                    view.setSelectedCourse(newValue);
+                });
     }
 }

@@ -32,8 +32,10 @@ public class InscriptionView extends BorderPane {
     private ContextMenu contextMenuSession;
     private ObjectProperty<Course> selectedCourse = new SimpleObjectProperty<>();
     private GridPane grid = new GridPane();
+    private Label titleLabel;
+    private VBox titleBox;
+    private VBox vbox;
 
-// Getter pour la propriété Observable
 
     public InscriptionView() {
         columnLeft();
@@ -44,7 +46,70 @@ public class InscriptionView extends BorderPane {
     }
 
     public void columnLeft() {
-        // Créer le tableau
+        /**
+         * Créer le tableau
+          */
+        tableView = new TableView<>();
+        createTable();
+        /**
+         * permet à la table de redimensionner les colonnes automatiquement en fonction de la taille de la table
+         */
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        /**
+         *  Ajouter les boutons en bas du tableau
+         */
+        HBox buttonsBox = createButtonsBox();
+        /**
+         * Créer le conteneur pour le titre et le tableau
+         */
+        VBox topBox = createTopBox();
+
+        /**
+         *  Placer les deux conteneurs dans un conteneur VBox global
+          */
+
+        leftPane = new VBox(topBox, buttonsBox);
+        leftPane.setPrefSize(400, 300);
+        leftPane.setPadding(new Insets(10));
+
+        /**
+         * Ajouter le conteneur VBox global dans le pane de gauche du SplitPane
+         */
+        this.setLeft(leftPane);
+    }
+    private VBox createTopBox() {
+        Label label = new Label("Liste de cours");
+        label.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+        VBox topBox = new VBox(label, tableView);
+        topBox.setSpacing(10);
+        topBox.setPadding(new Insets(10));
+        topBox.setAlignment(Pos.TOP_CENTER);
+        return topBox;
+    }
+    /**
+     * Ajouter les boutons en bas du tableau
+     * @return
+     */
+    private HBox createButtonsBox() {
+        HBox buttonsBox = new HBox(100);
+        buttonsBox.setAlignment(Pos.BOTTOM_CENTER);
+        buttonsBox.setPadding(new Insets(10));
+        session = new Button("Session");
+        charger = new Button("Charger");
+        session.setPrefSize(90, 27);
+        configureSessionContextMenu();
+        buttonsBox.getChildren().addAll(session, charger);
+        return buttonsBox;
+    }
+    private void configureSessionContextMenu() {
+        contextMenuSession = new ContextMenu();
+        MenuItem Automne = new MenuItem("Automne");
+        MenuItem Hiver = new MenuItem("Hiver");
+        MenuItem Ete = new MenuItem("Ete");
+        contextMenuSession.getItems().addAll(Automne,Hiver,Ete);
+        session.setContextMenu(contextMenuSession);
+    }
+    private void createTable(){
         tableView = new TableView<>();
         TableColumn<Course, String> columnCode = new TableColumn<>("Code");
         columnCode.setPrefWidth(150);
@@ -58,149 +123,89 @@ public class InscriptionView extends BorderPane {
 
         //ajoute les deux colonnes au tableau
         tableView.getColumns().addAll(columnCode, columnCourse);
-        // permet à la table de redimensionner les colonnes automatiquement en fonction de la taille de la table
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        // Ajouter les boutons en bas du tableau
-        HBox buttonsBox = new HBox(100, session,  charger);
-        buttonsBox.setAlignment(Pos.BOTTOM_CENTER);
-        buttonsBox.setPadding(new Insets(10));
-
-        session.setPrefSize(90, 27);
-        // Ajouter les éléments à afficher pour le bouton session
-        contextMenuSession = new ContextMenu();
-        MenuItem Automne = new MenuItem("Automne");
-        MenuItem Hiver = new MenuItem("Hiver");
-        MenuItem Ete = new MenuItem("Ete");
-        //ajoute les elements au contextMenu
-        contextMenuSession.getItems().addAll(Automne,Hiver,Ete);
-        session.setContextMenu(contextMenuSession);
-
-        // Créer le conteneur pour le titre et le tableau
-        Label label = new Label("Liste de cours");
-        label.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
-        VBox topBox = new VBox(label, tableView);
-        topBox.setSpacing(10);
-        topBox.setPadding(new Insets(10));
-        topBox.setAlignment(Pos.TOP_CENTER);
-
-        // Placer les deux conteneurs dans un conteneur VBox global
-        leftPane = new VBox(topBox, buttonsBox);
-        leftPane.setPrefSize(400, 300);
-        leftPane.setPadding(new Insets(10));
-
-        // Ajouter le conteneur VBox global dans le pane de gauche du SplitPane
-        this.setLeft(leftPane);
     }
+
+
+    //      Colonne Droite
+
 
     public void columnRight() {
         rightPane = new VBox();
         rightPane.setPrefSize(400, 300);
 
-        // Créer le titre en gras et en grande taille
-        Label titleLabel = new Label("Formulaire d'Inscription");
-        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 18px;");
-        VBox titleBox = new VBox(titleLabel);
-        titleBox.setAlignment(Pos.CENTER); // centrer le titre
-        titleBox.setPadding(new Insets(10, 0, 0, 0));
-        // Créer le champs de formulaire
+        /**
+         *  Créer le titre en gras et en grande taille
+          */
+        titleRight();
+
+        /**
+         *  Créer le formulaire
+         */
+        createForm();
+        VBox vbox = VboxRight();
+
+        rightPane.getChildren().addAll(titleBox, vbox);
+    }
+
+    //      METHODE COLUMN RIGHT
+    public GridPane createForm() {
+        grid = new GridPane();
         firstName = new TextField();
         name = new TextField();
         email = new TextField();
         matricule = new TextField();
 
-        // GridPane grid = new GridPane();
         Label firstNameLabel = new Label("Prénom:");
         Label lastNameLabel = new Label("Nom:");
         Label emailLabel = new Label("Email:");
         Label matriculeLabel = new Label("Matricule:");
+
         grid.addRow(0, firstNameLabel, firstName);
         grid.addRow(1, lastNameLabel, name);
         grid.addRow(2, emailLabel, email);
         grid.addRow(3, matriculeLabel, matricule);
+
         grid.setVgap(10);
-
-        // Définir la largeur de la colonne de la grille
         grid.getColumnConstraints().add(new ColumnConstraints(100));
-
-        // Créer un bouton pour envoyer les données
-        sendButton.setAlignment(Pos.CENTER); // centrer le bouton
-
-        // Créer une VBox pour contenir la grille de formulaire et le bouton
-        VBox vbox = new VBox(titleLabel,grid, sendButton);
-        vbox.setPadding(new Insets(10)); // Ajouter une marge autour de la VBox
-        vbox.setSpacing(50); // Ajouter un espace entre les éléments de la VBox
+        return grid;
+    }
+    /**
+     * centrer le bouton envoyer
+     * Créer une VBox pour contenir la grille de formulaire et le bouton
+     *  Ajouter une marge autour de la VBox
+     *  Ajouter un espace entre les éléments de la VBox
+     */
+    public VBox VboxRight() {
+        sendButton.setAlignment(Pos.CENTER);
+        VBox vbox = new VBox(titleLabel, grid, sendButton);
+        vbox.setPadding(new Insets(10));
+        vbox.setSpacing(50);
         vbox.setAlignment(Pos.CENTER);
-        // Ajouter le titre et la VBox à la droite du conteneur principal
-        rightPane.getChildren().addAll(titleBox, vbox);
+        return vbox;
+    }
+    /**
+     * Ajouter le titre et la VBox à la droite du conteneur principal
+     */
+    public Label titleRight(){
+        Label titleLabel = new Label("Formulaire d'Inscription");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 18px;");
+        VBox titleBox = new VBox(titleLabel);
+        titleBox.setAlignment(Pos.CENTER);
+        titleBox.setPadding(new Insets(10, 0, 0, 0));
+        return titleLabel;
     }
 
 
-    //les getters et setters de tous les attributs,boutons,etc
-    public ContextMenu getContextMenuSession() {
-        return this.contextMenuSession;
-    }
-    public Button getsessionButton() {
-        return this.session;
-    }
-    public Button getChargerButton(){
-        return this.charger;
-    }
-    public Button getSendButton(){
-        return this.sendButton;
-    }
-    public void setSelectedSession(String selectedSession) {
-        this.selectedSession= selectedSession;
-    }
 
-    public String getSelectedSession() {
-        return this.selectedSession;
-    }
-    public TableView<Course> getTableView() {
-        return tableView;
-    }
 
-    public Course getSelectedCourse() {
-        Course selectedCourseObject = selectedCourse.get();
-        if (selectedCourseObject == null) {
-            return null;
-        }
-        return new Course( selectedCourseObject.getName(),selectedCourseObject.getCode(),
-                selectedCourseObject.getSession());
-    }
-    // Setter pour la propriété Observable
-    public void setSelectedCourse(Course course) {
-        selectedCourse.set(course);
-    }
+    //      METHODES CONNEXES
 
-    public String getFirstName() {
-        return firstName.getText();
-    }
-    public String getName() {
-        return name.getText();
-    }
-    public String getEmail() {
-        return  email.getText();
-    }
-    public String getMatricule() {
-        return matricule.getText();
-    }
-    //erreur
+
     public void changeSessionButtonColor(String color) {
         session.setStyle("-fx-border-color:" + color);
     }
     public void changetableBorder(String color){
         tableView.setStyle("-fx-border-color:" + color );
-    }
-    public void changeGrid(String color){
-        BorderStroke borderStroke =
-                new BorderStroke(Color.valueOf(color), BorderStrokeStyle.SOLID, null, new BorderWidths(1));
-        Border border = new Border(borderStroke);
-        for (Node node : grid.getChildren()) {
-            if (node instanceof TextField) {
-                ((TextField) node).setBorder(border);
-            }
-        }
     }
 
     public void ConfirmationDialog(String firstName, String selectedCourse) {
@@ -216,6 +221,62 @@ public class InscriptionView extends BorderPane {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.showAndWait();
+    }
+
+
+    //      LES GETTERS
+
+
+    public ContextMenu getContextMenuSession() {
+        return this.contextMenuSession;
+    }
+    public Button getsessionButton() {
+        return this.session;
+    }
+    public Button getChargerButton(){
+        return this.charger;
+    }
+    public Button getSendButton(){
+        return this.sendButton;
+    }
+    public TableView<Course> getTableView() {
+        return tableView;
+    }
+
+    public Course getSelectedCourse() {
+        Course selectedCourseObject = selectedCourse.get();
+        if (selectedCourseObject == null) {
+            return null;
+        }
+        return new Course( selectedCourseObject.getName(),selectedCourseObject.getCode(),
+                selectedCourseObject.getSession());
+    }
+    public String getSelectedSession() {
+        return this.selectedSession;
+    }
+    public String getFirstName() {
+        return firstName.getText();
+    }
+    public String getName() {
+        return name.getText();
+    }
+    public String getEmail() {
+        return  email.getText();
+    }
+    public String getMatricule() {
+        return matricule.getText();
+    }
+
+
+    //      LES SETTERS
+
+
+    public void setSelectedSession(String selectedSession) {
+        this.selectedSession= selectedSession;
+    }
+
+    public void setSelectedCourse(Course course) {
+        selectedCourse.set(course);
     }
 
 }

@@ -67,8 +67,6 @@ public class InscriptionController {
                 throw new RuntimeException(e);
             }
         });
-
-
     }
 
     private void reconnect() throws IOException {
@@ -80,7 +78,6 @@ public class InscriptionController {
         try {
             this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             this.objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,9 +101,7 @@ public class InscriptionController {
                     }
                 }
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         } else {
@@ -164,11 +159,8 @@ public class InscriptionController {
                         view.showAlert("Ces informations sont incorrecte", sb.toString());
                     }
                     // Modifier la bordure des éléments correspondant aux erreurs
-
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         } else if (selectedSession == null && view.getSelectedCourse() == null) {

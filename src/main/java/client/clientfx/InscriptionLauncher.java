@@ -1,4 +1,4 @@
-package client.clientfx;
+package client.ClientFX;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

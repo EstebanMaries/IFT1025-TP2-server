@@ -185,7 +185,6 @@ public class Server {
      */
     public void handleRegistration() throws IOException {
         String session, code, matricule, prenom, nom, email;
-
         Course course;
         BufferedWriter writer;
         ArrayList<Integer> errors = new ArrayList<>();

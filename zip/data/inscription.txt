@@ -4,3 +4,5 @@ Hiver	IFT1025	202359	2	2	2
 Automne	IFT1015	20235999	Esteban	Maries	esteban.maries@umontreal.ca	
 Automne	IFT1015	20235999	Esteban	Maries	esteban.maries@umontreal.ca	
 Automne	IFT1015	20235999	Esteban	Maries	esteban.maries@umontreal.ca	
+Automne	IFT1015	20235999	Esteban	Maries	esteban.maries@umontreal.ca	
+Ete	IFT2256	20234999	erghjnoru	wigfheoru	iebveiourg@rtoh.ca	

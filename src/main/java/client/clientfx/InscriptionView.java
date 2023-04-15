@@ -1,4 +1,4 @@
-package client.clientfx;
+package client.ClientFX;
 
 import javafx.scene.Node;
 import javafx.scene.control.cell.PropertyValueFactory;

@@ -6,3 +6,6 @@ Automne	IFT1015	20235999	Esteban	Maries	esteban.maries@umontreal.ca
 Automne	IFT1015	20235999	Esteban	Maries	esteban.maries@umontreal.ca	
 Automne	IFT1015	20235999	Esteban	Maries	esteban.maries@umontreal.ca	
 Ete	IFT2256	20234999	erghjnoru	wigfheoru	iebveiourg@rtoh.ca	
+Automne	IFT1015	22336876	John	Doe	johnD@gmail.com	
+Hiver	IFT2125	20235999	ee	ee	ee@com.ca	
+Automne	IFT2255	12345678	ee	ee	wgfwg@gmail.cpm	

@@ -1,4 +1,4 @@
-package client.clientfx;
+package client.ClientFX;
 
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
@@ -16,65 +16,80 @@ import javafx.scene.layout.*;
  */
 public class InscriptionView extends BorderPane {
     /**
-     * divise la fenetre en deux partie
+     * Divise la fenêtre en deux parties
      */
     private SplitPane splitPane;
+
     /**
-     * affiche le conteneur gauche du splitPane
+     * Affiche le conteneur gauche du splitPane
      */
     private VBox leftPane;
+
     /**
-     * affiche le conteneur gauche du splitPane
+     * Affiche le conteneur gauche du splitPane
      */
     private VBox rightPane;
+
     /**
-     * represente la session selectionne
+     * Représente la session sélectionnée
      */
     private String selectedSession= null;
+
     /**
-     * le champs prenom pour la saisie du client
+     * Champ prénom pour la saisie du client
      */
     public TextField firstName;
+
     /**
-     * le champs nom pour la saisie du client
+     * Champ nom pour la saisie du client
      */
     public TextField name;
+
     /**
-     * le champs mail pour la saisie du client
+     * Champ mail pour la saisie du client
      */
     public TextField email;
+
     /**
-     * le champs matricule pour la saisie du client
+     * Champ matricule pour la saisie du client
      */
     public TextField matricule;
+
     /**
-     * Bouton pour selectionner une session
+     * Bouton pour sélectionner une session
      */
     private Button session ;
+
     /**
      * Bouton pour charger le cours d'une session
      */
     private Button charger;
+
     /**
      * Bouton pour envoyer le formulaire d'inscription
      */
     private Button sendButton ;
+
     /**
-     * tableau pour afficher les cours
+     * Tableau pour afficher les cours
      */
     private TableView<Course> tableView;
+
     /**
      * Pour afficher le context menu
      */
     private ContextMenu contextMenuSession;
+
     /**
-     * enregistre le cours selectionne
+     * Enregistre le cours sélectionné
      */
     private ObjectProperty<Course> selectedCourse = new SimpleObjectProperty<>();
+
     /**
-     * organise le champs
+     * Organise les champs
      */
     private GridPane grid ;
+
     /**
      * Pour afficher le titre du formulaire
      */
@@ -82,17 +97,14 @@ public class InscriptionView extends BorderPane {
 
 
     /**
-     * gere l'interface utilisateur du programme
+     * Gère l'interface utilisateur du programme
      */
     public InscriptionView() {
-        /**
-         * lance les deux methodes pour afficher les elements
-         */
+        // lance les deux méthodes pour afficher les elements
         columnLeft();
         columnRight();
-        /**
-         * ajoute les conteurs au splitPane
-         */
+
+        // ajoute les conteurs au splitPane
         splitPane = new SplitPane(leftPane, rightPane);
         splitPane.setPrefSize(800, 600);
         this.setCenter(splitPane);
@@ -104,42 +116,31 @@ public class InscriptionView extends BorderPane {
      * Crée la colonne gauche
      */
     public void columnLeft() {
-        /**
-         * Crée le tableau
-          */
+        // Crée le tableau
         tableView = new TableView<>();
         createTable();
-        /**
-         * permet à la table de redimensionner les colonnes automatiquement en fonction de la taille de la table
-         */
+
+        // permet à la table de redimensionner les colonnes automatiquement en fonction de la taille de la table
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        /**
-         *  Ajouter les boutons en bas du tableau
-         */
+
+        // Ajouter les boutons en bas du tableau
         HBox buttonsBox = createButtonsBox();
-        /**
-         * Crée le conteneur pour le titre et le tableau
-         */
+
+        //Crée le conteneur pour le titre et le tableau
         VBox topBox = createTopBox();
 
-        /**
-         *  Place les deux conteneurs dans un conteneur VBox global
-          */
-
+        // Place les deux conteneurs dans un conteneur VBox global
         leftPane = new VBox(topBox, buttonsBox);
         leftPane.setPrefSize(400, 300);
         leftPane.setPadding(new Insets(10));
 
-        /**
-         * Ajoute le conteneur VBox global dans le pane de gauche du SplitPane
-         */
+        // Ajoute le conteneur VBox global dans le pane de gauche du SplitPane
         this.setLeft(leftPane);
     }
 
     //      LES METHODES DE LA COLONNE GAUCHE
-
     /**
-     *configure le Box contenant le titre de la colonne gauche et le titre de la colonne gauche,
+     * Configure le Box contenant le titre de la colonne gauche et le titre de la colonne gauche,
      * @return le Box contenant le titre
      */
     private VBox createTopBox() {
@@ -151,6 +152,7 @@ public class InscriptionView extends BorderPane {
         topBox.setAlignment(Pos.TOP_CENTER);
         return topBox;
     }
+
     /**
      * Ajoute les boutons en bas du tableau
      * @return le Box Horizontal contenant les deux Boutons
@@ -168,7 +170,7 @@ public class InscriptionView extends BorderPane {
     }
 
     /**
-     * configure le contex menu de session
+     * Configure le context menu de session
      */
     private void configureSessionContextMenu() {
         contextMenuSession = new ContextMenu();
@@ -178,8 +180,9 @@ public class InscriptionView extends BorderPane {
         contextMenuSession.getItems().addAll(Automne,Hiver,Ete);
         session.setContextMenu(contextMenuSession);
     }
+
     /**
-     * configure le tableau (les colonnes et affichages des elements dans le tableau)
+     * Configure le tableau (les colonnes et les affichages des éléments dans le tableau)
      */
     private void createTable(){
         tableView = new TableView<>();
@@ -194,12 +197,12 @@ public class InscriptionView extends BorderPane {
         tableView.getColumns().addAll(columnCode, columnCourse);
     }
 
-    //      LES METHODES POUR CHANGER LE SYLE DES ELEMENTS DE LA COLONNE GAUCHE
+    //      LES METHODES POUR CHANGER LE STYLE DES ELEMENTS DE LA COLONNE GAUCHE
 
 
     /**
-     * change la bordure du bouton session
-     * @param color  la couleur avec la quelle on veut changer
+     * Change la bordure du bouton session
+     * @param color la couleur avec laquelle on veut changer
      */
     public void changeSessionButtonColor(String color) {
         session.setStyle("-fx-border-color:" + color);
@@ -207,19 +210,15 @@ public class InscriptionView extends BorderPane {
 
     /**
      * change la bordure
-     * @param color la couleur avec la quelle on veut changer
+     * @param color la couleur avec laquelle on veut changer
      */
-    public void changetableBorder(String color){
+    public void changeTableBorder(String color){
         tableView.setStyle("-fx-border-color:" + color );
     }
 
-
-
     //      LES GETTERS DES ELEMENTS DE LA COLONNE GAUCHE
-
-
     /**
-     * recupere le menu contextuel
+     * Récupère le menu contextuel
      * @return le menu contextuel
      */
     public ContextMenu getContextMenuSession() {
@@ -227,17 +226,19 @@ public class InscriptionView extends BorderPane {
     }
 
     /**
-     * @return la session selectionne dans l'interface du bouton
+     * @return la session sélectionnée dans l'interface du bouton
      */
     public Button getsessionButton() {
         return this.session;
     }
+
     /**
      * @return le bouton charger
      */
     public Button getChargerButton(){
         return this.charger;
     }
+
     /**
      * @return le bouton envoyer
      */
@@ -246,15 +247,15 @@ public class InscriptionView extends BorderPane {
     }
 
     /**
-     * @return le tableau et permet d'y accerder
+     * @return le tableau et permet d'y accéder
      */
     public TableView<Course> getTableView() {
         return tableView;
     }
 
     /**
-     * recuperer le cours selectionne dans le tableau
-     * @return null si aucun n'est selectonne sinon il retourne le cours selectionne
+     * Récupère le cours sélectionné dans le tableau
+     * @return null si aucun n’est sélectionné sinon il retourne le cours sélectionné
      */
     public Course getSelectedCourse() {
         Course selectedCourseObject = selectedCourse.get();
@@ -267,62 +268,49 @@ public class InscriptionView extends BorderPane {
 
 
     //      LES SETTERS DES ELEMENTS DE LA COLONNES
-
-
     /**
-     * definit l'item selectionne dans le menu contextuel comme la valeur du bouton selectionne
+     * Définit l'item sélectionné dans le menu contextuel comme la valeur du bouton sélectionne
      * @param selectedSession la session selection
      */
     public void setSelectedSession(String selectedSession) {
-        this.selectedSession= selectedSession;
+        this.selectedSession = selectedSession;
     }
+
     /**
-     * definit le cours selectionne dans le tableau
-     * @param course le cours selectionne
+     * Définit le cours sélectionné dans le tableau
+     * @param course le cours sélectionné
      */
     public void setSelectedCourse(Course course) {
         selectedCourse.set(course);
     }
 
-
     //      LA COLONNE DROITE
-
-
     /**
      * Crée la colonne droite
      */
     private void columnRight() {
-        /**
-         *  Crée le titre
-         */
+        // Crée le titre
         titleLabel = titleRight();
-        /**
-         *  Crée le titre
-         */
+
+        // Crée le titre
         grid = createForm();
-        /**
-         * Crée le bouton d'envoi
-         */
+
+        // Crée le bouton d'envoi
         sendButton = sendButtonRight();
-        /**
-         * Crée le conteneur VBox de la partie droite
-         */
+
+        // Crée le conteneur VBox de la partie droite
         VBox vbox = VboxRight();
-        /**
-         * Ajoute le conteneur VBox global dans le pane de gauche du SplitPane
-         */
+
+        // Ajoute le conteneur VBox global dans le pane de gauche du SplitPane
         rightPane = new VBox(vbox);
         rightPane.setPadding(new Insets(10));
         rightPane.setSpacing(10);
     }
 
-
     //     LES  METHODES DE LA COLONNE DROITE
-
-
     /**
      * configure le formulaire
-     * @return
+     * @return grid
      */
     public GridPane createForm() {
         grid = new GridPane();
@@ -345,11 +333,12 @@ public class InscriptionView extends BorderPane {
         grid.getColumnConstraints().add(new ColumnConstraints(100));
         return grid;
     }
+
     /**
-     * configure le bouton envoyer
+     * Configure le bouton envoyer
      * Créer une VBox pour contenir la grille de formulaire et le bouton
-     *  Ajouter une marge autour de la VBox
-     *  Ajouter un espace entre les éléments de la VBox
+     * Ajouter une marge autour de la VBox
+     * Ajouter un espace entre les éléments de la VBox
      */
     public VBox VboxRight() {
         VBox vbox = new VBox(titleLabel, grid, sendButton);
@@ -358,6 +347,7 @@ public class InscriptionView extends BorderPane {
         vbox.setAlignment(Pos.CENTER);
         return vbox;
     }
+
     /**
      * Ajouter le titre et la VBox à la droite du conteneur principal
      */
@@ -369,8 +359,9 @@ public class InscriptionView extends BorderPane {
         titleBox.setPadding(new Insets(10, 0, 0, 0));
         return titleLabel;
     }
+
     /**
-     * configure le bouton envoyer
+     * Configure le bouton envoyer
      */
     public Button sendButtonRight() {
         Button sendButton = new Button("Envoyer");
@@ -378,43 +369,40 @@ public class InscriptionView extends BorderPane {
         return sendButton;
     }
 
-
     //      LES GETTERS POUR LA COLONNE DROITE
-
-
     /**
-     * @return le texte dans le champs nom
+     * @return le texte dans le champ nom
      */
     public String getFirstName() {
         return firstName.getText();
     }
+
     /**
-     * @return le texte dans le champs name
+     * @return le texte dans le champ name
      */
     public String getName() {
         return name.getText();
     }
+
     /**
-     * @return le texte dans le champs mail
+     * @return le texte dans le champ mail
      */
     public String getEmail() {
         return  email.getText();
     }
+
     /**
-     * @return le texte dans le champs matricule
+     * @return le texte dans le champ matricule
      */
     public String getMatricule() {
         return matricule.getText();
     }
 
-
     //      LES METHODES POUR LES BOITES DE DIALOGUES
-
-
     /**
-     * affiche la confirmation de l'inscription dans une boite de dialogue
+     * Affiche la confirmation de l'inscription dans une boite de dialogue
      * @param firstName le nom du client
-     * @param selectedCourse le cours selectionne
+     * @param selectedCourse le cours sélectionné
      */
     public void ConfirmationDialog(String firstName, String selectedCourse) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -426,7 +414,7 @@ public class InscriptionView extends BorderPane {
     }
 
     /**
-     * affiche une boite de dialogue alerte lorsque le client n'a pas choisi le cours ou sessiion
+     * Affiche une boite de dialogue alerte lorsque le client n’a pas choisi de cours ou session
      * ou remplit correctement le formulaire
      * @param title le titre de l'alerte
      * @param header le contenu de l'alerte
@@ -437,8 +425,4 @@ public class InscriptionView extends BorderPane {
         alert.setHeaderText(header);
         alert.showAndWait();
     }
-
-
-
-
 }

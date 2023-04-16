@@ -10,4 +10,8 @@ target/*
 src/main/java/server/data/inscription.txt
 src/main/java/server/data/cours.txt
 src/main/MANIFEST.MF
-src/main/java/server/data/inscription.txt
+src/main/java/module-info.java
+src/main/java/server/ServerBonus.java
+src/main/java/server/ServerBonusLauncher.java
+src/main/build/*
+zip/data/inscription.txt

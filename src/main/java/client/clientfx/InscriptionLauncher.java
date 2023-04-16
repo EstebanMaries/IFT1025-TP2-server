@@ -58,7 +58,7 @@ public class InscriptionLauncher extends Application {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Erreur de chargement. \n Veuillez réessayer");
             alert.showAndWait();
             e.printStackTrace();
-            System.exit(1);
+            //System.exit(1);
         }
     }
 }

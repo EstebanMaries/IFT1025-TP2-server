@@ -3,6 +3,7 @@ package client.clientfx;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -73,9 +74,12 @@ public class InscriptionController {
 
         //      LA CONNEXION
 
-
-        this.clientSocket = new Socket(HOST, PORT);
-        this.view = view;
+        try {
+            this.clientSocket = new Socket(HOST, PORT);
+            this.view = view;
+        }catch (Exception e){
+            errorAlertConnexion();
+        }
 
 
         //      LES ACTIONS
@@ -122,7 +126,7 @@ public class InscriptionController {
             try {
                 reconnect();
             } catch (IOException e) {
-                errorAlert();
+                errorAlertConnexion();
             }
         });
 
@@ -145,7 +149,7 @@ public class InscriptionController {
             try {
                 reconnect();
             } catch (IOException e) {
-                errorAlert();
+                errorAlertConnexion();
             }
         });
     }
@@ -168,7 +172,7 @@ public class InscriptionController {
                 objectInputStream.close();
                 clientSocket.close();
             } catch (IOException e) {
-                errorAlert();
+                errorAlertConnexion();
             }
         }
         this.clientSocket = new Socket(HOST, PORT);
@@ -184,9 +188,8 @@ public class InscriptionController {
         try {
             this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
             this.objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
-            System.out.println("Je suis ici 5");
         } catch (IOException e) {
-           errorAlert();
+           errorAlertConnexion();
         }
     }
 
@@ -376,13 +379,22 @@ public class InscriptionController {
         } else if (selectedSession == null ) {
             view.changeSessionButtonColor("red");
             view.showAlert("Session invalide", "Veuillez sélectionner une session");
-         }else if(view.getSelectedCourse() == null){
+         }else {
             view.changetableBorder("red");
             view.showAlert("Cours invalide", "Veuillez sélectionner un cours");
-        }else{
-            view.showAlert("erreur de connexion","impossible de se connecter au serveur");
         }
     }
+
+    /**
+     * pour les erreurs lient à la connexion avec le serveur
+     */
+    private void errorAlertConnexion(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur de connexion");
+        alert.setHeaderText("Impossible de se connecter au serveur \n Veuillez réesayer");
+        alert.showAndWait();
+    }
+
 
     /**
      * affiche le message de confirmation

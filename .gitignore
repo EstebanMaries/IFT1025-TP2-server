@@ -15,3 +15,6 @@ src/main/java/server/ServerBonus.java
 src/main/java/server/ServerBonusLauncher.java
 src/main/build/*
 zip/data/inscription.txt
+src/main/java/module-info.java
+src/main/java/server/ServerBonus.java
+src/main/java/server/ServerBonusLauncher.java

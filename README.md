@@ -13,11 +13,11 @@ java -jar server.jar
 java -jar client-simple.jar
 ```
 
-Cependant, pour faire marcher ```ClientFX.jar```, veuillez utiliser la commande suivante :
+Cependant, pour faire marcher ```client_fx.jar```, veuillez utiliser la commande suivante :
 
 ```
 $libPath = Resolve-Path lib
-java --module-path $libPath --add-modules=javafx.controls -jar ClientFX.jar
+java --module-path $libPath --add-modules=javafx.controls -jar client_fx.jar
 ```
 Il faut être dans le dossier zip pour faire marcher les jars.
 

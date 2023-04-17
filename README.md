@@ -6,14 +6,14 @@
 
 ## Fonctionnement
 ### 1.
-Les jars server et client-simple marche en faisant l'appel :
+Les jars ```server.jar``` et ```client-simple.jar``` marche en faisant l'appel :
 
 ```
 java -jar server.jar
 java -jar client-simple.jar
 ```
 
-Cependant, pour faire marcher ClientFX.jar, veuillez utiliser la commande suivante :
+Cependant, pour faire marcher ```ClientFX.jar```, veuillez utiliser la commande suivante :
 
 ```
 $libPath = Resolve-Path ../lib

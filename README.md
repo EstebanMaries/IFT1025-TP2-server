@@ -16,7 +16,7 @@ java -jar client-simple.jar
 Cependant, pour faire marcher ```ClientFX.jar```, veuillez utiliser la commande suivante :
 
 ```
-$libPath = Resolve-Path ../lib
+$libPath = Resolve-Path lib
 java --module-path $libPath --add-modules=javafx.controls -jar ClientFX.jar
 ```
 Il faut être dans le dossier zip pour faire marcher les jars.

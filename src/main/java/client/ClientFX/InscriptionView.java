@@ -11,7 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 /**
- * InscriptionView est destine à afficher l'interface utilisateur du programme
+ * InscriptionView est destiné à afficher l'interface utilisateur du programme
  * @author Esteban Maries 20235999, Herve Ngisse 20204609
  */
 public class InscriptionView extends BorderPane {

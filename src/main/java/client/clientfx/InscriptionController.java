@@ -1,4 +1,4 @@
-package client.clientfx;
+package client.ClientFX;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +16,7 @@ import javafx.scene.control.MenuItem;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,8 @@ public class InscriptionController {
     /**
      * Port du serveur auquel le client veut se connecter
      */
+    private static final int MIN_PORT = 9090;
+    private static final int MAX_PORT = 9095;
     private static final int PORT = 9090;
     /**
      * La sortie des arguments du client vers le serveur
@@ -75,7 +78,7 @@ public class InscriptionController {
         //      LA CONNEXION
 
         try {
-            this.clientSocket = new Socket(HOST, PORT);
+            this.clientSocket = new Socket(HOST, findFreePort());
             this.view = view;
         }catch (Exception e){
             errorAlertConnexion();
@@ -156,7 +159,25 @@ public class InscriptionController {
 
     //      LES METHODES DE CONNEXION
 
-
+    public static int findFreePort() throws IOException {
+        int port = -1;
+        for (int i = MIN_PORT; i <= MAX_PORT; i++) {
+            try {
+                System.out.println(i);
+                ServerSocket socket = new ServerSocket(i);
+                socket.close();
+                port = i;
+                break;
+            } catch (IOException e) {
+                // Port already in use, continue searching
+                continue;
+            }
+        }
+        if (port == -1) {
+            throw new IOException("Could not find a free port between " + MIN_PORT + " and " + MAX_PORT);
+        }
+        return port;
+    }
     /**
      * reconnecte le client apres une requete vers le serveur
      * Start() recree une prise avec le meme port et vers le meme serveur
@@ -175,7 +196,7 @@ public class InscriptionController {
                 errorAlertConnexion();
             }
         }
-        this.clientSocket = new Socket(HOST, PORT);
+        this.clientSocket = new Socket(HOST, findFreePort());
         this.objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
         this.objectInputStream = new ObjectInputStream(clientSocket.getInputStream());
     }

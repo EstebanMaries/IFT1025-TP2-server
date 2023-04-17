@@ -89,11 +89,18 @@ public class Server {
             try {
                 client = server.accept();
                 System.out.println("Connecté au client: " + client);
-                objectInputStream = new ObjectInputStream(client.getInputStream());
-                objectOutputStream = new ObjectOutputStream(client.getOutputStream());
-                listen();
-                disconnect();
-                System.out.println("Client déconnecté!");
+                Thread multiConnexion = new Thread(() -> {
+                    try {
+                        objectInputStream = new ObjectInputStream(client.getInputStream());
+                        objectOutputStream = new ObjectOutputStream(client.getOutputStream());
+                        listen();
+                        disconnect();
+                        System.out.println("Client déconnecté!");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                multiConnexion.start();
             } catch (Exception e) {
                 e.printStackTrace();
             }

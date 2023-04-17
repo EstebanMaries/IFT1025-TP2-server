@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"client.ClientFX","l":"InscriptionController"},{"p":"client.ClientFX","l":"InscriptionLauncher"},{"p":"client.ClientFX","l":"InscriptionView"}];updateSearchResults();

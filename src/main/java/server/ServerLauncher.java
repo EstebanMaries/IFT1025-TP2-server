@@ -25,10 +25,7 @@ public class ServerLauncher {
         }
         return port;
     }
-    /**
-     * Le port utilisé pour le serveur
-     */
-    public final static int PORT = 9090;
+
 
     /**
      * Démarre le serveur sur un port donné et l'exécute.

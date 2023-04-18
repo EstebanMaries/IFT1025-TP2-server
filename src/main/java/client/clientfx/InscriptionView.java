@@ -1,4 +1,4 @@
-package client.ClientFX;
+package client.clientfx;
 
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
@@ -106,7 +106,7 @@ public class InscriptionView extends BorderPane {
     public void columnLeft() {
         /**
          * Crée le tableau
-          */
+         */
         tableView = new TableView<>();
         createTable();
         /**
@@ -124,7 +124,7 @@ public class InscriptionView extends BorderPane {
 
         /**
          *  Place les deux conteneurs dans un conteneur VBox global
-          */
+         */
 
         leftPane = new VBox(topBox, buttonsBox);
         leftPane.setPrefSize(400, 300);

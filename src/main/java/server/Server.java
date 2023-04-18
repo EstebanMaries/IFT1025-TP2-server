@@ -85,27 +85,38 @@ public class Server {
      * Rend le serveur capable de recevoir les requêtes d'un client
      */
     public void run() {
-        while (true) {
-            try {
+        try {
+            while (true) {
+                // Attendre la connexion d'un client
                 client = server.accept();
                 System.out.println("Connecté au client: " + client);
-                Thread multiConnexion = new Thread(() -> {
-                    try {
-                        objectInputStream = new ObjectInputStream(client.getInputStream());
-                        objectOutputStream = new ObjectOutputStream(client.getOutputStream());
-                        listen();
-                        disconnect();
-                        System.out.println("Client déconnecté!");
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                // Créer un objet de type Runnable pour traiter la requête du client
+                Runnable clientHandler = new Runnable() {
+                    public void run() {
+                        try {
+                            // Créer les flux d'entrée/sortie pour communiquer avec le client
+                            ObjectInputStream objectInputStream = new ObjectInputStream(client.getInputStream());
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(client.getOutputStream());
+
+                            listen();
+                            disconnect();
+                            System.out.println("Client déconnecté: " );
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                });
-                multiConnexion.start();
-            } catch (Exception e) {
-                e.printStackTrace();
+                };
+
+                // Créer un thread séparé pour traiter la requête du client
+                Thread clientThread = new Thread(clientHandler);
+                clientThread.start();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
 
     /**
      * Récupère les entrées du client.
